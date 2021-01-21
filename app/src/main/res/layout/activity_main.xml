@@ -16,7 +16,54 @@
         app:layout_constraintBottom_toTopOf="@id/gridLayout"
         app:layout_constraintEnd_toEndOf="@id/gridLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true">
+
+
+            <ToggleButton
+                android:id="@+id/playButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="50dp"
+                android:height="50dp"
+                android:background="@drawable/circularbutton"
+                android:text="ToggleButton" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tempoView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="50dp"
+            android:text="Tempo" />
+
+        <TextView
+            android:id="@+id/nextNoteView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="30dp"
+            android:text="Next Note" />
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:padding="50dp" />
+
+    </RelativeLayout>
 
     <GridLayout
         android:id="@+id/gridLayout"
@@ -36,6 +83,7 @@
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
+            android:background="@drawable/border"
             android:orientation="horizontal">
 
             <Button
@@ -51,6 +99,7 @@
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
+            android:background="@drawable/border"
             android:orientation="horizontal">
 
             <Button
@@ -67,13 +116,13 @@
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
+            android:background="@drawable/border"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/SettingsButton"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-
                 android:layout_gravity="center"
                 android:alpha="0" />
         </LinearLayout>
@@ -83,6 +132,7 @@
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
+            android:background="@drawable/border"
             android:orientation="horizontal">
 
             <Button
@@ -98,6 +148,7 @@
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
+            android:background="@drawable/border"
             android:orientation="horizontal">
 
             <Button
@@ -113,6 +164,7 @@
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
+            android:background="@drawable/border"
             android:orientation="horizontal">
 
             <Button
