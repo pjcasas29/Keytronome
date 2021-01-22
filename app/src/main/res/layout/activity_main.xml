@@ -86,12 +86,13 @@
             android:background="@drawable/border"
             android:orientation="horizontal">
 
-            <Button
+            <RelativeLayout
                 android:id="@+id/OrderButton"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
-                android:alpha="0" />
+                android:alpha="0" >
+            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
