@@ -1,40 +1,31 @@
 package com.example.keytronome;
 
+import android.content.Context;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.net.Uri;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-//TODO: Async task, and finish timer
-class Metronome extends TimerTask {
+class Metronome extends Thread  {
 
-    Metronome(context, SOUND){
+
+    private SoundPool mSoundPool = new SoundPool.Builder().build();
+    private int bpm;
+    public Context context;
+    public Uri SOUND;
+
+    Metronome(Context app_context, int set_bpm){
         super();
-
+        context = app_context;
+        bpm = set_bpm;
     }
 
     @Override
     public void run() {
-        playSound();
-    }
-    private void  playSound() {
-        final MediaPlayer mp = MediaPlayer.create(context, SOUND);
-        mp.start();
-        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            public void onCompletion(MediaPlayer mp) {
-                mp.release();
-            };
-        });
-    }
 
-    public void play() {
-        Timer mainTimer = new Timer();
-        Timer subTimer = new Timer();
-        Metronome mainTimerTask = new Metronome();
-        Metronome subTimerTask = new Metronome();
-
-        mainTimer.schedule(mainTimerTask, 0, MILLIS_IN_MINUTE / bpm);
-        subTimer.schedule(subTimerTask, (300 * (100+swing)) / bpm, MILLIS_IN_MINUTE / bpm);
 
     }
+
 }

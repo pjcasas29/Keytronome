@@ -3,21 +3,20 @@ package com.example.keytronome;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
-import java.util.Dictionary;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static int DEFAULT_TEMPO = 120;
 
-    int tempo;
+    int bpm;
     String order, startNote, keyLength, keySig;
+    Metronome metronome;
 
     ToggleButton playButton;
 
@@ -33,19 +32,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(isChecked){
-
+                    metronome.start();
                 }
                 else{
-
+                    metronome.interrupt();
                 }
             }
         });
     }
 
-
     //TODO: Initiate values
     private void initValues(){
-        tempo = 120;
-        order = getString(R.string.);
+        bpm = DEFAULT_TEMPO;
+        metronome = new Metronome(this.getApplicationContext(), bpm);
     }
 }
