@@ -1,4 +1,4 @@
-package com.example.keytronome;
+package com.example.keytronome.controllers;
 
 import android.content.Context;
 import android.media.MediaPlayer;
