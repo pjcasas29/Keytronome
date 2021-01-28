@@ -21,8 +21,8 @@
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
             android:layout_centerVertical="true">
 
 
@@ -79,6 +79,7 @@
         app:layout_constraintTop_toBottomOf="@id/relativeLayout">
 
         <LinearLayout
+            android:id="@+id/OrderButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
@@ -86,16 +87,14 @@
             android:background="@drawable/border"
             android:orientation="horizontal">
 
-            <RelativeLayout
-                android:id="@+id/OrderButton"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
-                android:alpha="0" >
-            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/orderButtonTitle"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/LengthButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
@@ -103,16 +102,11 @@
             android:background="@drawable/border"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/LengthButton"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
 
-                android:layout_gravity="center"
-                android:alpha="0" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/SettingsButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
@@ -120,15 +114,10 @@
             android:background="@drawable/border"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/SettingsButton"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
-                android:alpha="0" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/StartingKeyButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
@@ -136,15 +125,11 @@
             android:background="@drawable/border"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/StartingKeyButton"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
-                android:alpha="0" />
+
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/KeySignatureButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
@@ -152,15 +137,10 @@
             android:background="@drawable/border"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/KeySignatureButton"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
-                android:alpha="0" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/button"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
@@ -168,12 +148,6 @@
             android:background="@drawable/border"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/button"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
-                android:alpha="0" />
         </LinearLayout>
 
 

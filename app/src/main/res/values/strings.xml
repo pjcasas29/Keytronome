@@ -3,4 +3,5 @@
     <string-array name="key_orders">
         <item>random</item>
     </string-array>
+    <string name="order_button_title">Order</string>
 </resources>
