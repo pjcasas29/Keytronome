@@ -20,15 +20,13 @@ public class KeytronomeRepository {
         return instance;
     }
 
-
-    public MutableLiveData<KeytronomeModel> getDefaultSettings(){
-        setDefaultSettings();
-        MutableLiveData<KeytronomeModel> mSettings = new MutableLiveData<>();
-        mSettings.setValue(model);
-        return mSettings;
+    public MutableLiveData<Integer> getTempo(){
+        MutableLiveData<Integer> tempo = new MutableLiveData<>();
+        tempo.postValue(model.getBpm());
+        return tempo;
     }
 
-    private void setDefaultSettings(){
-        model = new KeytronomeModel();
+    public void setTempo(int bpm) {
+        model.setTempo(bpm);
     }
 }

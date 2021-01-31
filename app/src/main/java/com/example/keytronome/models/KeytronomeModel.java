@@ -3,7 +3,7 @@ package com.example.keytronome.models;
 import com.example.keytronome.tasks.MetronomeTask;
 
 /**
- * POJO for encapsulating the state of the keytronome model
+ * POJO for values of the settings of the keytronome model.
  *
  */
 public class KeytronomeModel {
@@ -15,7 +15,6 @@ public class KeytronomeModel {
     public String keyOrder;
     public int tempo;
     public String timeSig;
-    public boolean isActive;
 
     private MetronomeTask mMetronomeTask;
 
@@ -36,18 +35,6 @@ public class KeytronomeModel {
         else{
             throw new IllegalArgumentException("VALUE OF TEMPO MUST BE BETWEEN 0 AND 300");
         }
-    }
-
-    public void start(){
-        this.isActive =  true;
-    }
-
-    public void stop(){
-        this.isActive = false;
-    }
-
-    public boolean isActive() {
-        return this.isActive;
     }
 
     public int getBpm(){

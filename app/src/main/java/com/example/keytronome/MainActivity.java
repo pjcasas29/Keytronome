@@ -26,15 +26,25 @@ public class MainActivity extends AppCompatActivity {
 
         mMainActivityViewModel.init();
 
-        mMainActivityViewModel.getKnmSettings().observe(this, new Observer<KeytronomeModel>() {
+        //Bind to whole Keytronome model. This detects any changes to the whole keytronome model
+        mMainActivityViewModel.getTempo().observe(this, new Observer<Integer>() {
             @Override
-            public void onChanged(KeytronomeModel keytronomeModel) {
-
+            public void onChanged(Integer integer) {
+                return;
             }
         });
 
-        initGridMenu();
-
+        //Bind to isPlaying
+        mMainActivityViewModel.getIsPlaying().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isPlaying) {
+                if(isPlaying){
+                    updateView();
+                }else{
+                    resetView();
+                }
+            }
+        });
 
         //Main Play button
         playButton = (ToggleButton) findViewById(R.id.playButton);
@@ -49,6 +59,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        initGridMenu();
+
+    }
+    // Resets the view when the app stops playing
+    private void resetView() {
+    playButton.setChecked(false);
+    }
+
+
+    private void updateView() {
     }
 
     private void initGridMenu(){
