@@ -4,4 +4,5 @@
         <item>random</item>
     </string-array>
     <string name="order_button_title">Order</string>
+    <string name="tempo_button_title">Tempo</string>
 </resources>

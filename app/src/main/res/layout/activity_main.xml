@@ -79,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@id/relativeLayout">
 
         <LinearLayout
-            android:id="@+id/OrderButton"
+            android:id="@+id/tempoButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
@@ -88,8 +88,14 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tempoButtonTitle"
                 android:layout_width="wrap_content"
-                android:id="@+id/orderButtonTitle"
+                android:layout_height="wrap_content"
+                android:text="@string/tempo_button_title" />
+
+            <TextView
+                android:id="@+id/tempoButtonValue"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 

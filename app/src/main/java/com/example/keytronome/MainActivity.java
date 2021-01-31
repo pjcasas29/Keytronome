@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.example.keytronome.models.KeytronomeModel;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private MainActivityViewModel mMainActivityViewModel;
 
     ToggleButton playButton;
+    private TextView tempoButtonValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initGridMenu(){
-        //tempo = mMainActivityViewModel.getTempo();
+        tempoButtonValue = (TextView) findViewById(R.id.tempoButtonValue);
+        tempoButtonValue.setText(mMainActivityViewModel.getTempo().getValue());
     }
 
 }
