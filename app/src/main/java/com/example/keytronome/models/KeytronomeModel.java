@@ -1,6 +1,6 @@
 package com.example.keytronome.models;
 
-import com.example.keytronome.threads.MetronomeTask;
+import com.example.keytronome.tasks.MetronomeTask;
 
 /**
  * POJO for encapsulating the state of the keytronome model
@@ -9,6 +9,7 @@ import com.example.keytronome.threads.MetronomeTask;
 public class KeytronomeModel {
     //Default values
     private static int DEFAULT_TEMPO = 120;
+    //TODO: Change to dictionary of int string pairs, key will be 4/4 and the int will be the number of beats in the measure.
     private static String DEFAULT_TIMESIG = "4/4";
 
     public String keyOrder;
