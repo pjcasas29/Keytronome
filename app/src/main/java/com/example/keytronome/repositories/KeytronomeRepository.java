@@ -11,8 +11,7 @@ import java.util.List;
 public class KeytronomeRepository {
 
     private static KeytronomeRepository instance;
-    //TODO: Default values must come from a database
-    private KeytronomeModel settings = new KeytronomeModel();
+    private KeytronomeModel model = new KeytronomeModel();
 
     public static KeytronomeRepository getInstance(){
         if(instance == null){
@@ -25,11 +24,11 @@ public class KeytronomeRepository {
     public MutableLiveData<KeytronomeModel> getDefaultSettings(){
         setDefaultSettings();
         MutableLiveData<KeytronomeModel> mSettings = new MutableLiveData<>();
-        mSettings.setValue(settings);
+        mSettings.setValue(model);
         return mSettings;
     }
 
     private void setDefaultSettings(){
-        settings = new KeytronomeModel();
+        model = new KeytronomeModel();
     }
 }
