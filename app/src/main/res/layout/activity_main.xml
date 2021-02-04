@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="100"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -78,7 +78,7 @@
         app:layout_constraintStart_toStartOf="@id/relativeLayout"
         app:layout_constraintTop_toBottomOf="@id/relativeLayout">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/tempoButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -91,13 +91,17 @@
                 android:id="@+id/tempoButtonTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tempo_button_title" />
+                android:text="@string/tempo_button_title"
+                android:gravity="center_vertical"/>
 
             <TextView
                 android:id="@+id/tempoButtonValue"
+                android:layout_below="@id/tempoButtonTitle"
+                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:text="120" />
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/LengthButton"
@@ -158,4 +162,14 @@
 
 
     </GridLayout>
+
+    <FrameLayout
+        android:id="@+id/optionsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/gridLayout"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

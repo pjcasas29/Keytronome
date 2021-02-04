@@ -1,6 +1,7 @@
 package com.example.keytronome.viewmodels;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -45,6 +46,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public void setTempo(int bpm){
+        Log.d("DEBUG", "Setting tempo to " + bpm);
         mRepo.setTempo(bpm);
     }
 

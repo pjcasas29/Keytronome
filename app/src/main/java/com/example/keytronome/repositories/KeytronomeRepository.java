@@ -21,9 +21,10 @@ public class KeytronomeRepository {
     }
 
     public MutableLiveData<Integer> getTempo(){
-        MutableLiveData<Integer> tempo = new MutableLiveData<>();
-        tempo.setValue(model.getBpm());
-        return tempo;
+        ///MutableLiveData<Integer> tempo = new MutableLiveData<>();
+        //tempo.setValue(model.getBpm());
+        //return tempo;
+        return model.getBpm();
     }
 
     public void setTempo(int bpm) {

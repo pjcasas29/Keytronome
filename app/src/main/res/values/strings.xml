@@ -5,4 +5,6 @@
     </string-array>
     <string name="order_button_title">Order</string>
     <string name="tempo_button_title">Tempo</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

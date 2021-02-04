@@ -1,14 +1,18 @@
-package com.example.keytronome;
+package com.example.keytronome.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.example.keytronome.R;
 import com.example.keytronome.models.KeytronomeModel;
 import com.example.keytronome.viewmodels.MainActivityViewModel;
 
@@ -19,19 +23,27 @@ public class MainActivity extends AppCompatActivity {
     ToggleButton playButton;
     private TextView tempoButtonValue;
 
+    FragmentManager fm;
+    private TextView tempoView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fm = getSupportFragmentManager();
 
+        //Initialize the viewmodel
         mMainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
-
         mMainActivityViewModel.init();
 
-        //Bind to whole Keytronome model. This detects any changes to the whole keytronome model
+        //Detect tempo changes
         mMainActivityViewModel.getTempo().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
+                tempoView = (TextView) findViewById(R.id.tempoView);
+                tempoView.setText(integer.toString() + "bpm");
+
+                Log.d("DEBUGB", "Tempo change detected on view");
                 return;
             }
         });
@@ -62,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         initGridMenu();
 
     }
@@ -75,8 +89,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initGridMenu(){
-        tempoButtonValue = (TextView) findViewById(R.id.tempoButtonValue);
-        tempoButtonValue.setText(mMainActivityViewModel.getTempo().getValue());
+        tempoButtonValue = findViewById(R.id.tempoButtonValue);
+        tempoButtonValue.setText(mMainActivityViewModel.getTempo().getValue().toString());
+
+        View tempoButton = findViewById(R.id.tempoButton);
+        tempoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fm.beginTransaction()
+                        .replace(R.id.optionsFragment, new TempoScrollerFragment())
+                        .setCustomAnimations(android.R.anim.accelerate_decelerate_interpolator, android.R.anim.fade_out)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
     }
 
 }

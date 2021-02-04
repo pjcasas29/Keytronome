@@ -1,5 +1,8 @@
 package com.example.keytronome.models;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.keytronome.tasks.MetronomeTask;
 
 /**
@@ -12,32 +15,33 @@ public class KeytronomeModel {
     //TODO: Change to dictionary of int string pairs, key will be 4/4 and the int will be the number of beats in the measure.
     private static String DEFAULT_TIMESIG = "4/4";
 
-    public String keyOrder;
-    public int tempo;
-    public String timeSig;
+    public MutableLiveData<String> keyOrder = new MutableLiveData<>();
+    public MutableLiveData<Integer> tempo = new MutableLiveData<>();
+    public MutableLiveData<String> timeSig = new MutableLiveData<>();
 
     private MetronomeTask mMetronomeTask;
 
     public KeytronomeModel(int bpm, String sig){
-        tempo = bpm;
-        timeSig = sig;
+//        tempo = bpm;
+//        timeSig = sig;
     }
 
     public KeytronomeModel(){
-        tempo = DEFAULT_TEMPO;
-        timeSig = DEFAULT_TIMESIG;
+
+        tempo.setValue(DEFAULT_TEMPO);
+        timeSig.setValue(DEFAULT_TIMESIG);
     }
 
     public void setTempo(int bpm) {
-        if(bpm < 300 && bpm > 20){
-            tempo = bpm;
+        if(bpm <= 300 && bpm >= 20){
+            tempo.setValue(bpm);
         }
         else{
             throw new IllegalArgumentException("VALUE OF TEMPO MUST BE BETWEEN 0 AND 300");
         }
     }
 
-    public int getBpm(){
+    public MutableLiveData<Integer> getBpm(){
         return this.tempo;
     }
 }
