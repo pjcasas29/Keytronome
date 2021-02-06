@@ -1,5 +1,6 @@
 package com.example.keytronome.repositories;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.keytronome.models.KeytronomeModel;
@@ -29,5 +30,13 @@ public class KeytronomeRepository {
 
     public void setTempo(int bpm) {
         model.setTempo(bpm);
+    }
+
+    public Integer getMinTempo() {
+        return model.getMinTempo();
+    }
+
+    public int getMaxTempo() {
+        return model.getMaxTempo();
     }
 }

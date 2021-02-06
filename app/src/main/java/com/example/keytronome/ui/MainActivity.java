@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 fm.beginTransaction()
+                        .setCustomAnimations(R.animator.slide_up, android.R.anim.fade_out)
                         .replace(R.id.optionsFragment, new TempoScrollerFragment())
-                        .setCustomAnimations(android.R.anim.accelerate_decelerate_interpolator, android.R.anim.fade_out)
                         .addToBackStack(null)
                         .commit();
             }

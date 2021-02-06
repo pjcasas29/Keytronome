@@ -69,4 +69,12 @@ public class MainActivityViewModel extends AndroidViewModel {
     public void setIsPlaying(boolean playing){
         isPlaying.setValue(playing);
     }
+
+    public Integer getMinTempo() {
+        return mRepo.getMinTempo();
+    }
+
+    public int getMaxTempo() {
+        return mRepo.getMaxTempo();
+    }
 }

@@ -43,6 +43,8 @@ public class TempoScrollerFragment extends Fragment {
     private TextView tvSelectedItem;
     PickerAdapter adapter;
 
+    MainActivityViewModel viewModel;
+
     public TempoScrollerFragment() {
         // Required empty public constructor
     }
@@ -72,11 +74,7 @@ public class TempoScrollerFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
-
     }
-
 
 
     @Override
@@ -91,22 +89,23 @@ public class TempoScrollerFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Inflate the layout for this fragment
-        MainActivityViewModel viewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
 
         //Set the scrollablle tempo
         RecyclerView recyclerViewTempo = getActivity().findViewById(R.id.rvtempo);
         PickerLayoutManager pickerLayoutManager = new PickerLayoutManager(getActivity(), PickerLayoutManager.HORIZONTAL, false);
         pickerLayoutManager.setChangeAlpha(true);
         pickerLayoutManager.setScaleDownBy(0.99f);
-        pickerLayoutManager.setScaleDownDistance(0.8f);
+        pickerLayoutManager.setScaleDownDistance(0.95f);
 
-        adapter = new PickerAdapter(getActivity(), populateTempos(300), recyclerViewTempo);
+
+        adapter = new PickerAdapter(getActivity(), populateTempos(viewModel.getMaxTempo()), recyclerViewTempo);
         recyclerViewTempo.setAdapter(adapter);
 
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerViewTempo);
         recyclerViewTempo.setLayoutManager(pickerLayoutManager);
-
+        pickerLayoutManager.scrollToPosition(viewModel.getTempo().getValue() - viewModel.getMinTempo());
         pickerLayoutManager.setOnScrollStopListener(new PickerLayoutManager.onScrollStopListener() {
             @Override
             public void selectedView(View view) {
@@ -118,7 +117,7 @@ public class TempoScrollerFragment extends Fragment {
 
     private List<String> populateTempos(int count){
         List<String> data = new ArrayList<>();
-        for(int i = 20; i < count; i++){
+        for(int i = viewModel.getMinTempo(); i < count; i++){
             data.add(String.valueOf(i));
         }
         return data;

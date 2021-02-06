@@ -56,7 +56,7 @@ public class MetronomeTask implements Runnable {
             }
         } catch (InterruptedException ie) {
             mSoundPool.release();
-            Log.e("METRONOME THREAD", ie.getMessage());
+            Log.e("METRONOME THREAD", "Interrupted");
         }
 
     }
