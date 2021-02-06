@@ -39,4 +39,8 @@ public class KeytronomeRepository {
     public int getMaxTempo() {
         return model.getMaxTempo();
     }
+
+    public MutableLiveData<Integer> getTimeSig() {
+        return model.getTimeSig();
+    }
 }

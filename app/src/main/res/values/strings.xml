@@ -7,4 +7,8 @@
     <string name="tempo_button_title">Tempo</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="twofour">2/4</string>
+    <string name="fourfour">4/4</string>
+    <string name="threefour">3/4</string>
+    <string name="sixeight">6/8</string>
 </resources>

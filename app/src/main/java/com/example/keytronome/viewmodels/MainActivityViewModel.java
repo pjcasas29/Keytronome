@@ -16,6 +16,8 @@ import com.example.keytronome.tasks.MetronomeTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.net.ssl.SSLSession;
+
 /**
  *The view model keeps track of the live state of the application
  */
@@ -76,5 +78,9 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public int getMaxTempo() {
         return mRepo.getMaxTempo();
+    }
+
+    public LiveData<Integer> getTimeSig() {
+        return mRepo.getTimeSig();
     }
 }

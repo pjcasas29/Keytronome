@@ -1,6 +1,7 @@
 package com.example.keytronome.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -52,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
         mMainActivityViewModel.getIsPlaying().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isPlaying) {
-                if(isPlaying){
+                if (isPlaying) {
                     updateView();
-                }else{
+                } else {
                     resetView();
                 }
             }
@@ -65,30 +66,29 @@ public class MainActivity extends AppCompatActivity {
         playButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     mMainActivityViewModel.startMetronome();
-                }
-                else{
+                } else {
                     mMainActivityViewModel.stopMetronome();
                 }
             }
         });
 
 
-
         initGridMenu();
 
     }
+
     // Resets the view when the app stops playing
     private void resetView() {
-    playButton.setChecked(false);
+        playButton.setChecked(false);
     }
 
 
     private void updateView() {
     }
 
-    private void initGridMenu(){
+    private void initGridMenu() {
         tempoButtonValue = findViewById(R.id.tempoButtonValue);
         tempoButtonValue.setText(mMainActivityViewModel.getTempo().getValue().toString());
 
@@ -96,13 +96,27 @@ public class MainActivity extends AppCompatActivity {
         tempoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fm.beginTransaction()
-                        .setCustomAnimations(R.animator.slide_up, android.R.anim.fade_out)
-                        .replace(R.id.optionsFragment, new TempoScrollerFragment())
-                        .addToBackStack(null)
-                        .commit();
+                changeFragment(new TempoScrollerFragment());
             }
         });
+
+        View timeSigButton = findViewById(R.id.timeSigButton);
+        timeSigButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeFragment(new TimeSignatureFragment());
+            }
+        });
+
+    }
+
+    private void changeFragment(Fragment fragment) {
+        fm.beginTransaction()
+                .setCustomAnimations(R.animator.slide_up, R.animator.slide_down, R.animator.slide_up, R.animator.slide_down)
+//                .setCustomAnimations(R.animator.slide_up, R.animator.slide_down)
+                .replace(R.id.gridLayout, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
 }

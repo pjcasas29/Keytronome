@@ -1,0 +1,74 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <View
+        android:id="@+id/centerVerticalShim"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_centerVertical="true"
+        android:visibility="invisible" />
+
+    <View
+        android:id="@+id/centerHorizontalShim"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/twoFourButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/centerVerticalShim"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/centerHorizontalShim"
+        android:background="#42A5F5"
+        android:gravity="center"
+        android:text="@string/twofour"
+        android:textColor="#FFFFFF" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/fourFourButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/centerVerticalShim"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/centerHorizontalShim"
+        android:background="#EF5350"
+        android:gravity="center"
+        android:text="@string/fourfour"
+        android:textColor="#FFFFFF" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/threeFourButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/centerVerticalShim"
+        android:layout_toLeftOf="@+id/centerHorizontalShim"
+        android:background="#66BB6A"
+        android:gravity="center"
+        android:text="@string/threefour"
+        android:textColor="#FFFFFF" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/sixEightButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/centerVerticalShim"
+        android:layout_toRightOf="@+id/centerHorizontalShim"
+        android:background="#5C6BC0"
+        android:gravity="center"
+        android:text="@string/sixeight"
+        android:textColor="#FFFFFF" >
+    </TextView></RelativeLayout>
