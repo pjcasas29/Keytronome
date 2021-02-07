@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -40,12 +41,30 @@ public class MainActivity extends AppCompatActivity {
         //Detect tempo changes
         mMainActivityViewModel.getTempo().observe(this, new Observer<Integer>() {
             @Override
-            public void onChanged(Integer integer) {
+            public void onChanged(Integer tempo) {
                 tempoView = (TextView) findViewById(R.id.tempoView);
-                tempoView.setText(integer.toString() + "bpm");
-
+                tempoView.setText(tempo.toString() + "bpm");
+                tempoButtonValue.setText(tempo.toString());
                 Log.d("DEBUGB", "Tempo change detected on view");
                 return;
+            }
+        });
+
+        //Time signature changes
+        ImageView timeSigImage = findViewById(R.id.timeSignatureImage);
+        mMainActivityViewModel.getTimeSig().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String timeSig) {
+
+                if (timeSig.equals("4/4")) {
+                    timeSigImage.setImageDrawable(getResources().getDrawable(R.drawable._44));
+                } else if (timeSig.equals("3/4")) {
+                    timeSigImage.setImageDrawable(getResources().getDrawable(R.drawable._34));
+                } else if ((timeSig.equals("2/4"))) {
+                    timeSigImage.setImageDrawable(getResources().getDrawable(R.drawable._24));
+                } else if (timeSig.equals("6/8")) {
+                    timeSigImage.setImageDrawable(getResources().getDrawable(R.drawable._68));
+                }
             }
         });
 
@@ -113,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
     private void changeFragment(Fragment fragment) {
         fm.beginTransaction()
                 .setCustomAnimations(R.animator.slide_up, R.animator.slide_down, R.animator.slide_up, R.animator.slide_down)
-//                .setCustomAnimations(R.animator.slide_up, R.animator.slide_down)
                 .replace(R.id.gridLayout, fragment)
                 .addToBackStack(null)
                 .commit();

@@ -11,4 +11,5 @@
     <string name="fourfour">4/4</string>
     <string name="threefour">3/4</string>
     <string name="sixeight">6/8</string>
+    <string name="unfocusedTimeSig">#ffffff</string>
 </resources>

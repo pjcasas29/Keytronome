@@ -40,7 +40,11 @@ public class KeytronomeRepository {
         return model.getMaxTempo();
     }
 
-    public MutableLiveData<Integer> getTimeSig() {
+    public MutableLiveData<String> getTimeSig() {
         return model.getTimeSig();
+    }
+
+    public void setTimeSig(String timeSig) {
+        model.setTimeSig(timeSig);
     }
 }

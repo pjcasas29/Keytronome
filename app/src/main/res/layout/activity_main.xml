@@ -134,8 +134,12 @@
             android:layout_columnWeight="1"
             android:background="@drawable/border"
             android:orientation="horizontal">
-
-
+        <ImageView
+            android:id="@+id/timeSignatureImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/_44"
+            android:padding="30dp"/>
         </LinearLayout>
 
         <LinearLayout

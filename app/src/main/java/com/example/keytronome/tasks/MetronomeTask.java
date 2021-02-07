@@ -23,12 +23,12 @@ public class MetronomeTask implements Runnable {
     private int tickId;
     private int pingId;
     private Integer bpm;
-    private int timeSig;
+    private int beatsPerMeasure;
 
     public MetronomeTask(final MainActivityViewModel viewModel, Context context) {
         this.viewModel = viewModel;
         this.bpm = this.viewModel.getTempo().getValue();
-        this.timeSig = this.viewModel.getTimeSig().getValue();
+        this.beatsPerMeasure = this.viewModel.getBeatsPerMeasure();
         this.context = context;
         this.tickId = DEFAULT_TICK_ID;
         this.pingId = DEFAULT_PING_ID;
@@ -56,7 +56,7 @@ public class MetronomeTask implements Runnable {
                 if (this.executionTick == 10) {
                     mSoundPool.release();
                     this.viewModel.stopMetronome();
-                } else if(this.executionTick % timeSig == 0 || this.executionTick == 0){
+                } else if(this.executionTick % beatsPerMeasure == 0){
                     mSoundPool.play(loadPingId, 1.0f, 1.0f, 1, 0, 1.0f);
                     Log.i("METRONOME THREAD", this.executionTick++ + ": ");
                     Thread.sleep((long) (1000 * (60.0 / this.bpm)));

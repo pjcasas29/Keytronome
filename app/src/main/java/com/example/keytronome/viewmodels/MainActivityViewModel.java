@@ -13,6 +13,9 @@ import com.example.keytronome.models.KeytronomeModel;
 import com.example.keytronome.repositories.KeytronomeRepository;
 import com.example.keytronome.tasks.MetronomeTask;
 
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -26,6 +29,12 @@ public class MainActivityViewModel extends AndroidViewModel {
     private KeytronomeRepository mRepo;
     private MutableLiveData<Boolean> isPlaying = new MutableLiveData<>();
     private ExecutorService executor;
+    private HashMap<String, Integer> beatsPerMeasureMap = new HashMap<String, Integer>(){{
+        put("4/4", 4);
+        put("3/4", 3);
+        put("2/4", 2);
+        put("6/8", 6);
+    }};
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
@@ -80,7 +89,15 @@ public class MainActivityViewModel extends AndroidViewModel {
         return mRepo.getMaxTempo();
     }
 
-    public LiveData<Integer> getTimeSig() {
+    public LiveData<String> getTimeSig() {
         return mRepo.getTimeSig();
+    }
+
+    public Integer getBeatsPerMeasure(){
+        return beatsPerMeasureMap.get(mRepo.getTimeSig().getValue());
+    }
+
+    public void setTimeSig(String timeSig) {
+        mRepo.setTimeSig(timeSig);
     }
 }
