@@ -12,4 +12,6 @@
     <string name="threefour">3/4</string>
     <string name="sixeight">6/8</string>
     <string name="unfocusedTimeSig">#ffffff</string>
+    <string name="starting_key_button_title">Starting Key</string>
+    <string name="chromatic_ascending_order">ChromaticAscending</string>
 </resources>

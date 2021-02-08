@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.example.keytronome.R;
-import com.example.keytronome.models.KeytronomeModel;
 import com.example.keytronome.viewmodels.MainActivityViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -68,6 +67,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Starting Key changes
+        mMainActivityViewModel.getStartingKey().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String startingKey) {
+                ((TextView)findViewById(R.id.startingKeyValue)).setText(startingKey);
+            }
+        });
+
         //Bind to isPlaying
         mMainActivityViewModel.getIsPlaying().observe(this, new Observer<Boolean>() {
             @Override
@@ -93,9 +100,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         initGridMenu();
-
     }
 
     // Resets the view when the app stops playing
@@ -124,6 +129,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 changeFragment(new TimeSignatureFragment());
+            }
+        });
+
+        View startingKeyButton = findViewById(R.id.startingKeyButton);
+        startingKeyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeFragment(new StartingKeyFragment());
             }
         });
 

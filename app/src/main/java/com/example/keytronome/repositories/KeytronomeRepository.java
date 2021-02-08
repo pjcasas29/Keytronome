@@ -5,9 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.keytronome.models.KeytronomeModel;
 
-import java.security.Key;
 import java.util.ArrayList;
-import java.util.List;
 
 public class KeytronomeRepository {
 
@@ -22,9 +20,6 @@ public class KeytronomeRepository {
     }
 
     public MutableLiveData<Integer> getTempo(){
-        ///MutableLiveData<Integer> tempo = new MutableLiveData<>();
-        //tempo.setValue(model.getBpm());
-        //return tempo;
         return model.getBpm();
     }
 
@@ -46,5 +41,17 @@ public class KeytronomeRepository {
 
     public void setTimeSig(String timeSig) {
         model.setTimeSig(timeSig);
+    }
+
+    public ArrayList<String> getKeysList(){
+        return model.getKeysList();
+    }
+
+    public LiveData<String> getStartingKey() {
+        return model.getStartingKey();
+    }
+
+    public void setStartingKey(String key) {
+        model.setStartingKey(key);
     }
 }

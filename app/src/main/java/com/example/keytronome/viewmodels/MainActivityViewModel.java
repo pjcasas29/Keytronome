@@ -7,29 +7,25 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-import com.example.keytronome.models.KeytronomeModel;
 import com.example.keytronome.repositories.KeytronomeRepository;
 import com.example.keytronome.tasks.MetronomeTask;
 
-import java.util.Dictionary;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.net.ssl.SSLSession;
 
 /**
- *The view model keeps track of the live state of the application
+ * The view model keeps track of the live state of the application
  */
 public class MainActivityViewModel extends AndroidViewModel {
 
     private KeytronomeRepository mRepo;
     private MutableLiveData<Boolean> isPlaying = new MutableLiveData<>();
     private ExecutorService executor;
-    private HashMap<String, Integer> beatsPerMeasureMap = new HashMap<String, Integer>(){{
+    private HashMap<String, Integer> beatsPerMeasureMap = new HashMap<String, Integer>() {{
         put("4/4", 4);
         put("3/4", 3);
         put("2/4", 2);
@@ -48,15 +44,15 @@ public class MainActivityViewModel extends AndroidViewModel {
         setStartState();
     }
 
-    private void setStartState(){
+    private void setStartState() {
         isPlaying.setValue(false);
     }
 
-    public LiveData<Integer> getTempo(){
+    public LiveData<Integer> getTempo() {
         return mRepo.getTempo();
     }
 
-    public void setTempo(int bpm){
+    public void setTempo(int bpm) {
         Log.d("DEBUG", "Setting tempo to " + bpm);
         mRepo.setTempo(bpm);
     }
@@ -77,7 +73,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         return isPlaying;
     }
 
-    public void setIsPlaying(boolean playing){
+    public void setIsPlaying(boolean playing) {
         isPlaying.setValue(playing);
     }
 
@@ -93,11 +89,23 @@ public class MainActivityViewModel extends AndroidViewModel {
         return mRepo.getTimeSig();
     }
 
-    public Integer getBeatsPerMeasure(){
+    public Integer getBeatsPerMeasure() {
         return beatsPerMeasureMap.get(mRepo.getTimeSig().getValue());
     }
 
     public void setTimeSig(String timeSig) {
         mRepo.setTimeSig(timeSig);
+    }
+
+    public ArrayList<String> getKeysList() {
+        return mRepo.getKeysList();
+    }
+
+    public LiveData<String> getStartingKey() {
+        return mRepo.getStartingKey();
+    }
+
+    public void setStartingKey(String key) {
+        mRepo.setStartingKey(key);
     }
 }
