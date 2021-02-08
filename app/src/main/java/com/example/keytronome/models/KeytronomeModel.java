@@ -1,15 +1,13 @@
 package com.example.keytronome.models;
 
 import android.util.Log;
+import android.util.Pair;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
-import com.example.keytronome.R;
-import com.example.keytronome.tasks.MetronomeTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -20,6 +18,8 @@ public class KeytronomeModel {
     private final Integer MINIMUM_TEMPO = 40;
     private final int MAX_TEMPO = 300;
     private final int DEFAULT_TEMPO = 120;
+    private final int MAX_CYCLES = 10;
+    private final int DEFAULT_CYCLES = 1;
     private final String DEFAULT_TIMESIG = "4/4";
     private final String DEFAULT_KEY_ORDER = "chromatic";
     private final String DEFAULT_STARTING_KEY = "C";
@@ -30,12 +30,21 @@ public class KeytronomeModel {
     public MutableLiveData<String> keyOrder = new MutableLiveData<>();
     public MutableLiveData<Integer> tempo = new MutableLiveData<>();
     public MutableLiveData<String> timeSig = new MutableLiveData<>();
+    public MutableLiveData<Pair<Integer, String>> currentKey = new MutableLiveData<>();
+    public MutableLiveData<Pair<Integer, String>> nextKey = new MutableLiveData<>();
+    public MutableLiveData<ArrayList<String>> currentKeysList = new MutableLiveData<>();
+    public MutableLiveData<Integer> cycles = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isPlaying= new MutableLiveData<>();
 
     public KeytronomeModel() {
         tempo.setValue(DEFAULT_TEMPO);
         timeSig.setValue(DEFAULT_TIMESIG);
         keyOrder.setValue(DEFAULT_KEY_ORDER);
         startingKey.setValue(DEFAULT_STARTING_KEY);
+        cycles.setValue(DEFAULT_CYCLES);
+        this.setActiveKeysList();
+        resetKeyPositions();
+
     }
 
     public void setTempo(int bpm) {
@@ -68,6 +77,7 @@ public class KeytronomeModel {
 
     public void setKeyOrder(String order) {
         this.keyOrder.setValue(order);
+        this.setActiveKeysList();
     }
 
     public MutableLiveData<String> getStartingKey(){
@@ -76,26 +86,87 @@ public class KeytronomeModel {
 
     public void setStartingKey(String startingKey) {
         this.startingKey.setValue(startingKey);
+        this.setActiveKeysList();
     }
 
-    public ArrayList<String> getKeysList(){
+    public LiveData<ArrayList<String>> getActiveKeysList(){
+        return this.currentKeysList;
+    }
+
+
+    /**
+     * Creates a list of keys to iterate over according to the keytronome parameters
+     */
+    public void setActiveKeysList(){
         ArrayList<String> result = new ArrayList<>();
         int startingIndex = keys.indexOf(startingKey.getValue());
 
         Log.d("DEBUG MODEL", "Key order:" + this.keyOrder.getValue() + " Starting Key:" + startingKey.getValue() + " StartingIndex: " + startingIndex);
 
-        if(this.keyOrder.getValue().equals("chromatic")){
-            for(int i = 0; i < keys.size(); i++){
-                result.add(keys.get((startingIndex+ i ) % keys.size()));
-            }
-        }else if(this.keyOrder.getValue().equals("random")){
-            for(int i = 0; i < keys.size(); i++){
-                result.add(keys.get(new Random().nextInt(keys.size())));
+        //This loop multiplies the list by the number of cycles
+        for(int c = 0; c < this.cycles.getValue(); c++) {
+
+
+            if (this.keyOrder.getValue().equals("chromatic")) {
+                for (int i = 0; i < keys.size(); i++) {
+                    result.add(keys.get((startingIndex + i) % keys.size()));
+                }
+            } else if (this.keyOrder.getValue().equals("random")) {
+                for (int i = 0; i < keys.size(); i++) {
+                    result.add(keys.get(new Random().nextInt(keys.size())));
+                }
+            } else {
+                result.add("No Keys");
             }
         }
-        else{
-            result.add("No Keys");
+        this.currentKeysList.setValue(result);
+    }
+
+    public LiveData<Pair<Integer, String>> getNextKey() {
+        return this.nextKey;
+    }
+
+    public LiveData<Pair<Integer, String>> getCurrentKey(){
+        return this.currentKey;
+    }
+
+    public void setCycles(Integer newCycles) {
+        this.cycles.setValue(newCycles);
+    }
+
+    public MutableLiveData<Integer> getCycles() {
+        return this.cycles;
+    }
+
+    public int getMaxCycles() {
+        return this.MAX_CYCLES;
+    }
+
+    public ArrayList<String> getKeys(){
+        return keys;
+    }
+
+    private void resetKeyPositions(){
+        this.currentKey.setValue(new Pair<Integer, String>(0, this.currentKeysList.getValue().get(0)));
+        this.nextKey.setValue(new Pair<Integer, String>(1, this.currentKeysList.getValue().get(1)));
+    }
+
+    public void setIsPlaying(boolean changeIsPlaying) {
+        if(!changeIsPlaying){
+            resetKeyPositions();
+        }else//Set to true TODO: WHATEVER NEEDS TO GO HERE
+        {
+
         }
-        return result;
+        this.isPlaying.setValue(changeIsPlaying);
+    }
+
+    public LiveData<Boolean> isPlaying(){
+        return this.isPlaying;
+    }
+
+    public void goToNextKey() {
+        int nextIndex = (getCurrentKey().getValue().first + 1) % this.getActiveKeysList().getValue().size();
+        this.currentKey.postValue(new Pair<Integer, String>(nextIndex, this.currentKeysList.getValue().get(nextIndex)));
     }
 }

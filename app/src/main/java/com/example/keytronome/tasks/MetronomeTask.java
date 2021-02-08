@@ -24,14 +24,20 @@ public class MetronomeTask implements Runnable {
     private int pingId;
     private Integer bpm;
     private int beatsPerMeasure;
+    private int totalBeats;
 
     public MetronomeTask(final MainActivityViewModel viewModel, Context context) {
         this.viewModel = viewModel;
+
         this.bpm = this.viewModel.getTempo().getValue();
         this.beatsPerMeasure = this.viewModel.getBeatsPerMeasure();
+        this.totalBeats = this.beatsPerMeasure * this.viewModel.getActiveKeysList().getValue().size();
+
+
         this.context = context;
         this.tickId = DEFAULT_TICK_ID;
         this.pingId = DEFAULT_PING_ID;
+
     }
 
     public MetronomeTask(MainActivityViewModel viewModel, int tickPath, Context context) {
@@ -45,32 +51,39 @@ public class MetronomeTask implements Runnable {
     public void run() {
         int loadTickId = mSoundPool.load(context, tickId, 1);
         int loadPingId = mSoundPool.load(context, pingId, 1);
+
         try {
             Thread.sleep((long) (100));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        boolean playing = true;
         try {
-            while (this.viewModel.getIsPlaying().getValue()) {
-                if (this.executionTick == 10) {
+            while (this.viewModel.getIsPlaying().getValue() || playing) {
+                if (this.executionTick == this.totalBeats) {
                     mSoundPool.release();
-                    this.viewModel.stopMetronome();
+                    playing = false;
+                    //this.viewModel.stopMetronome();
                 } else if(this.executionTick % beatsPerMeasure == 0){
                     mSoundPool.play(loadPingId, 1.0f, 1.0f, 1, 0, 1.0f);
-                    Log.i("METRONOME THREAD", this.executionTick++ + ": ");
+                    Log.i("METRONOME THREAD", "Current Key: " + this.viewModel.getCurrentKey().getValue());
                     Thread.sleep((long) (1000 * (60.0 / this.bpm)));
+                    this.executionTick++;
+                    this.viewModel.goToNextKey();
                 }
                 else {
                     mSoundPool.play(loadTickId, 1.0f, 1.0f, 1, 0, 1.0f);
-                    Log.i("METRONOME THREAD", this.executionTick++ + ": ");
+                    //Log.i("METRONOME THREAD", this.executionTick++ + ": ");
                     Thread.sleep((long) (1000 * (60.0 / this.bpm)));
+                    this.executionTick++;
                 }
             }
         } catch (InterruptedException ie) {
             mSoundPool.release();
             Log.e("METRONOME THREAD", "Interrupted");
         }
+        this.viewModel.setIsPlaying(false);
 
     }
 

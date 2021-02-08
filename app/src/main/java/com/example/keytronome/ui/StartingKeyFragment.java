@@ -91,7 +91,7 @@ public class StartingKeyFragment extends Fragment {
         pickerLayoutManager.setScaleDownBy(0.99f);
         pickerLayoutManager.setScaleDownDistance(0.95f);
 
-        ArrayList<String> keysList = viewModel.getKeysList();
+        ArrayList<String> keysList = viewModel.getKeys();
 
         adapter = new PickerAdapter(getActivity(), keysList, recyclerViewKeys);
         recyclerViewKeys.setAdapter(adapter);
@@ -99,7 +99,7 @@ public class StartingKeyFragment extends Fragment {
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerViewKeys);
         recyclerViewKeys.setLayoutManager(pickerLayoutManager);
-        pickerLayoutManager.scrollToPosition(keysList.indexOf(viewModel.getStartingKey()));
+        //pickerLayoutManager.scrollToPosition(keysList.indexOf(viewModel.getStartingKey().getValue()));
         pickerLayoutManager.setOnScrollStopListener(new PickerLayoutManager.onScrollStopListener() {
             @Override
             public void selectedView(View view) {

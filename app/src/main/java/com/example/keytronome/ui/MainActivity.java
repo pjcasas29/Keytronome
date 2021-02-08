@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     FragmentManager fm;
     private TextView tempoView;
+    private TextView nextKeytv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,59 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+
+        //Main Play button
+        playButton = (ToggleButton) findViewById(R.id.playButton);
+        playButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                mMainActivityViewModel.setIsPlaying(isChecked);
+            }
+        });
+
+        //Bind to isPlaying
+        mMainActivityViewModel.getIsPlaying().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isPlaying) {
+                playButton.setChecked(isPlaying);
+
+//                if (isPlaying) {
+//                    updateViewPlaying();
+//                } else {
+//                    resetView();
+//                }
+            }
+        });
+
+
+        //TODO: NEEDS TO BE CHANGED TO CURRENT KEY. CURRENTLY DOESNT MAKE SENSE
+        //Set next note observer
+        nextKeytv = findViewById(R.id.nextKeyView);
+        mMainActivityViewModel.getNextKey().observe(this, new Observer<Pair<Integer, String>>() {
+            @Override
+            public void onChanged(Pair<Integer, String> nextKey) {
+                nextKeytv.setText("Next Key: " + nextKey.second);
+            }
+        });
+
+        initGridMenu();
+    }
+
+//    // Resets the view when the app stops playing
+//    private void resetView() {
+//        playButton.setChecked(false);
+//    }
+//
+//    //
+//    private void updateViewPlaying() {
+//    }
+
+    private void initGridMenu() {
+        tempoButtonValue = findViewById(R.id.tempoButtonValue);
+        tempoButtonValue.setText(mMainActivityViewModel.getTempo().getValue().toString());
+
         //Time signature changes
         ImageView timeSigImage = findViewById(R.id.timeSignatureImage);
         mMainActivityViewModel.getTimeSig().observe(this, new Observer<String>() {
@@ -71,50 +126,17 @@ public class MainActivity extends AppCompatActivity {
         mMainActivityViewModel.getStartingKey().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String startingKey) {
-                ((TextView)findViewById(R.id.startingKeyValue)).setText(startingKey);
+                ((TextView) findViewById(R.id.startingKeyValue)).setText(startingKey);
             }
         });
 
-        //Bind to isPlaying
-        mMainActivityViewModel.getIsPlaying().observe(this, new Observer<Boolean>() {
+        //Number of cycles changes
+        mMainActivityViewModel.getCycles().observe(this, new Observer<Integer>() {
             @Override
-            public void onChanged(Boolean isPlaying) {
-                if (isPlaying) {
-                    updateView();
-                } else {
-                    resetView();
-                }
+            public void onChanged(Integer cycles) {
+                ((TextView) findViewById(R.id.cyclesButtonValue)).setText(cycles.toString());
             }
         });
-
-        //Main Play button
-        playButton = (ToggleButton) findViewById(R.id.playButton);
-        playButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
-                    mMainActivityViewModel.startMetronome();
-                } else {
-                    mMainActivityViewModel.stopMetronome();
-                }
-            }
-        });
-
-        initGridMenu();
-    }
-
-    // Resets the view when the app stops playing
-    private void resetView() {
-        playButton.setChecked(false);
-    }
-
-
-    private void updateView() {
-    }
-
-    private void initGridMenu() {
-        tempoButtonValue = findViewById(R.id.tempoButtonValue);
-        tempoButtonValue.setText(mMainActivityViewModel.getTempo().getValue().toString());
 
         View tempoButton = findViewById(R.id.tempoButton);
         tempoButton.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +161,15 @@ public class MainActivity extends AppCompatActivity {
                 changeFragment(new StartingKeyFragment());
             }
         });
+
+        View cyclesButton = findViewById(R.id.cyclesButton);
+        cyclesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeFragment(new CyclesFragment());
+            }
+        });
+
 
     }
 

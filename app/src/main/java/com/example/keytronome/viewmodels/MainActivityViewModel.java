@@ -2,6 +2,7 @@ package com.example.keytronome.viewmodels;
 
 import android.app.Application;
 import android.util.Log;
+import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -16,6 +17,8 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.net.ssl.SSLSession;
+
 
 /**
  * The view model keeps track of the live state of the application
@@ -23,7 +26,6 @@ import java.util.concurrent.Executors;
 public class MainActivityViewModel extends AndroidViewModel {
 
     private KeytronomeRepository mRepo;
-    private MutableLiveData<Boolean> isPlaying = new MutableLiveData<>();
     private ExecutorService executor;
     private HashMap<String, Integer> beatsPerMeasureMap = new HashMap<String, Integer>() {{
         put("4/4", 4);
@@ -41,11 +43,6 @@ public class MainActivityViewModel extends AndroidViewModel {
             return;
         }
         mRepo = KeytronomeRepository.getInstance();
-        setStartState();
-    }
-
-    private void setStartState() {
-        isPlaying.setValue(false);
     }
 
     public LiveData<Integer> getTempo() {
@@ -57,24 +54,17 @@ public class MainActivityViewModel extends AndroidViewModel {
         mRepo.setTempo(bpm);
     }
 
-    //Start a new thread and pass the viewmodel to the thread so the thread can update the values
-    public void startMetronome() {
-        isPlaying.setValue(true);
-        executor = Executors.newSingleThreadExecutor();
-        executor.execute(new MetronomeTask(this, this.getApplication()));
-    }
-
-    public void stopMetronome() {
-        isPlaying.postValue(false);
-        executor.shutdownNow();
-    }
-
     public LiveData<Boolean> getIsPlaying() {
-        return isPlaying;
+        return mRepo.getIsPlaying();
     }
 
     public void setIsPlaying(boolean playing) {
-        isPlaying.setValue(playing);
+        if(playing){
+            Log.d("DEBUG", "SET IS PLAYING");
+
+            executor = Executors.newSingleThreadExecutor();
+            executor.execute(new MetronomeTask(this, this.getApplication()));}
+        mRepo.setIsPlaying(playing);
     }
 
     public Integer getMinTempo() {
@@ -97,8 +87,8 @@ public class MainActivityViewModel extends AndroidViewModel {
         mRepo.setTimeSig(timeSig);
     }
 
-    public ArrayList<String> getKeysList() {
-        return mRepo.getKeysList();
+    public LiveData<ArrayList<String>> getActiveKeysList() {
+        return mRepo.getActiveKeysList();
     }
 
     public LiveData<String> getStartingKey() {
@@ -107,5 +97,33 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public void setStartingKey(String key) {
         mRepo.setStartingKey(key);
+    }
+
+    public LiveData<Pair<Integer, String>> getNextKey() {
+        return mRepo.getNextKey();
+    }
+
+    public MutableLiveData<Integer> getCycles() {
+        return mRepo.getCycles();
+    }
+
+    public int getMaxCycles() {
+        return mRepo.getMaxCycles();
+    }
+
+    public void setCycles(int newCycles) {
+        mRepo.setCycles(newCycles);
+    }
+
+    public ArrayList<String> getKeys() {
+        return mRepo.getKeys();
+    }
+
+    public void goToNextKey() {
+        mRepo.goToNextKey();
+    }
+
+    public LiveData<Pair<Integer, String>> getCurrentKey() {
+        return mRepo.getCurrentKey();
     }
 }

@@ -1,5 +1,7 @@
 package com.example.keytronome.repositories;
 
+import android.util.Pair;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -43,8 +45,8 @@ public class KeytronomeRepository {
         model.setTimeSig(timeSig);
     }
 
-    public ArrayList<String> getKeysList(){
-        return model.getKeysList();
+    public LiveData<ArrayList<String>> getActiveKeysList(){
+        return model.getActiveKeysList();
     }
 
     public LiveData<String> getStartingKey() {
@@ -53,5 +55,41 @@ public class KeytronomeRepository {
 
     public void setStartingKey(String key) {
         model.setStartingKey(key);
+    }
+
+    public LiveData<Pair<Integer, String>> getNextKey() {
+        return model.getNextKey();
+    }
+
+    public MutableLiveData<Integer> getCycles() {
+        return model.getCycles();
+    }
+
+    public int getMaxCycles() {
+        return model.getMaxCycles();
+    }
+
+    public void setCycles(int newCycles) {
+        model.setCycles(newCycles);
+    }
+
+    public ArrayList<String> getKeys() {
+        return model.getKeys();
+    }
+
+    public void setIsPlaying(boolean isplaying) {
+        model.setIsPlaying(isplaying);
+    }
+
+    public void goToNextKey() {
+        model.goToNextKey();
+    }
+
+    public LiveData<Pair<Integer, String>> getCurrentKey() {
+        return model.getCurrentKey();
+    }
+
+    public LiveData<Boolean> getIsPlaying() {
+        return model.isPlaying();
     }
 }

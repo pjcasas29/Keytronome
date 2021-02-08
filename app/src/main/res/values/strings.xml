@@ -14,4 +14,5 @@
     <string name="unfocusedTimeSig">#ffffff</string>
     <string name="starting_key_button_title">Starting Key</string>
     <string name="chromatic_ascending_order">ChromaticAscending</string>
+    <string name="cycles_button_title">Cycles</string>
 </resources>
