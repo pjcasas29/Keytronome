@@ -23,7 +23,7 @@ public class KeytronomeModel {
     private final String DEFAULT_TIMESIG = "4/4";
     private final String DEFAULT_KEY_ORDER = "chromatic";
     private final String DEFAULT_STARTING_KEY = "C";
-    private String[] mKeys = {"C", "C#/Db", "D", "Eb", "E", "F", "F#/Gb", "G", "Ab", "A", "Bb", "B"};
+    private String[] mKeys = {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"};
     private final ArrayList<String> keys = new ArrayList<>(Arrays.asList(mKeys));
 
     public MutableLiveData<String> startingKey = new MutableLiveData<>();

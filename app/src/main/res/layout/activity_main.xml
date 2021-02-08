@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main_activity"
     android:animateLayoutChanges="true"
-    android:background="@drawable/gradient_background_wallpaper_002"
+    android:background="@drawable/wallpaperbluepurple"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:weightSum="100"
+    android:paddingTop="15dp"
     tools:context=".ui.MainActivity">
 
     <RelativeLayout
@@ -34,8 +36,9 @@
                 android:id="@+id/playButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:width="80dp"
-                android:height="80dp"
+                android:width="90dp"
+                android:height="90dp"
+                android:textSize="80sp"
                 android:background="@drawable/circularbutton"
                 android:gravity="center" />
 
@@ -48,8 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginTop="65dp"
+            android:layout_marginEnd="28dp"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
@@ -65,6 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:textSize="30sp"
                 android:text="C" />
         </LinearLayout>
 
@@ -123,7 +127,6 @@
                     android:id="@+id/tempoButtonTitle"
                     android:layout_width="45dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
@@ -134,6 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="0dp"
+                    android:textSize="18sp"
                     android:layout_gravity="center"
                     android:text="120bpm"
                     android:textColor="#FFFFFFFF" />
@@ -167,6 +171,7 @@
                 android:layout_marginBottom="20dip"
                 android:background="#00000000"
                 android:padding="12dip"
+                android:textStyle="bold"
                 android:textColor="#ffffffff" />
 
 

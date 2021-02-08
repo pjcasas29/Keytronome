@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Set top padding for status bar
+        findViewById(R.id.main_activity).setPadding(0, getStatusBarHeight(), 0, 0);
+
         //Hide Action Bar
         try
         {
@@ -202,6 +205,15 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.gridLayout, fragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
 }
