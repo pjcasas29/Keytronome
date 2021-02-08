@@ -100,9 +100,13 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(Boolean isPlaying) {
                 if (isPlaying){
                     progressBar.animate().alpha(1.0f).setDuration(1000);
+                    playButton.setTextSize(Float.parseFloat(getResources().getString(R.string.keytronome_play_Button_font_size)));
+
 
                 }else{
                     progressBar.animate().alpha(0.0f).setDuration(1000);
+                    playButton.setText(R.string.app_name);
+                    playButton.setTextSize(Float.parseFloat(getResources().getString(R.string.keytronome_button_font_size)));
                 }
             }
         });

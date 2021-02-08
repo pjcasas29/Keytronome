@@ -16,4 +16,6 @@
     <string name="chromatic_ascending_order">ChromaticAscending</string>
     <string name="cycles_button_title">Cycles</string>
     <string name="bpm">bpm</string>
+    <string name="keytronome_button_font_size">14</string>
+    <string name="keytronome_play_Button_font_size">80</string>
 </resources>
