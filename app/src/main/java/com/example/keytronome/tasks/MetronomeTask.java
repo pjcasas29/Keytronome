@@ -60,7 +60,7 @@ public class MetronomeTask implements Runnable {
 
         boolean playing = true;
         try {
-            while (this.viewModel.getIsPlaying().getValue() || playing) {
+            while (this.viewModel.getIsPlaying().getValue() && playing) {
                 if (this.executionTick == this.totalBeats) {
                     mSoundPool.release();
                     playing = false;
@@ -68,9 +68,9 @@ public class MetronomeTask implements Runnable {
                 } else if(this.executionTick % beatsPerMeasure == 0){
                     mSoundPool.play(loadPingId, 1.0f, 1.0f, 1, 0, 1.0f);
                     Log.i("METRONOME THREAD", "Current Key: " + this.viewModel.getCurrentKey().getValue());
+                    this.viewModel.goToNextKey();
                     Thread.sleep((long) (1000 * (60.0 / this.bpm)));
                     this.executionTick++;
-                    this.viewModel.goToNextKey();
                 }
                 else {
                     mSoundPool.play(loadTickId, 1.0f, 1.0f, 1, 0, 1.0f);
@@ -78,6 +78,7 @@ public class MetronomeTask implements Runnable {
                     Thread.sleep((long) (1000 * (60.0 / this.bpm)));
                     this.executionTick++;
                 }
+                this.viewModel.setProgress(((float)this.executionTick / (float)this.totalBeats)*100);
             }
         } catch (InterruptedException ie) {
             mSoundPool.release();

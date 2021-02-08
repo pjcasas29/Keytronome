@@ -26,8 +26,7 @@ import javax.net.ssl.SSLSession;
 public class MainActivityViewModel extends AndroidViewModel {
 
     private KeytronomeRepository mRepo;
-    private ExecutorService executor;
-    private HashMap<String, Integer> beatsPerMeasureMap = new HashMap<String, Integer>() {{
+    private final HashMap<String, Integer> beatsPerMeasureMap = new HashMap<String, Integer>() {{
         put("4/4", 4);
         put("3/4", 3);
         put("2/4", 2);
@@ -60,10 +59,11 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public void setIsPlaying(boolean playing) {
         if(playing){
-            Log.d("DEBUG", "SET IS PLAYING");
+            Log.d("VIEWMODEL", "SET IS PLAYING TRUE");
 
-            executor = Executors.newSingleThreadExecutor();
-            executor.execute(new MetronomeTask(this, this.getApplication()));}
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.execute(new MetronomeTask(this, this.getApplication()));
+        }
         mRepo.setIsPlaying(playing);
     }
 
@@ -125,5 +125,13 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public LiveData<Pair<Integer, String>> getCurrentKey() {
         return mRepo.getCurrentKey();
+    }
+
+    public void setProgress(float progress) {
+        mRepo.setProgress(progress);
+    }
+
+    public LiveData<Float> getProgress() {
+        return mRepo.getProgress();
     }
 }

@@ -106,13 +106,13 @@ public class TimeSignatureFragment extends Fragment {
     }
 
     private void timeSigSelected(ImageView view) {
-        String unfocusedColor = "#ffffff";
+        String unfocusedColor = "#00ffffff";
         twofour.setBackgroundColor(Color.parseColor(unfocusedColor));
         fourfour.setBackgroundColor(Color.parseColor(unfocusedColor));
         threefour.setBackgroundColor(Color.parseColor(unfocusedColor));
         sixeight.setBackgroundColor(Color.parseColor(unfocusedColor));
         //focused
-        view.setBackgroundColor(Color.parseColor("#000000"));
+        view.setBackgroundColor(Color.parseColor("#10ffffff"));
 
         if(view.getId()==R.id.twoFourButton) {
             viewModel.setTimeSig("2/4");

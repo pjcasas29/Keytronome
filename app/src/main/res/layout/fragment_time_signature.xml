@@ -25,10 +25,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/centerHorizontalShim"
-        android:background="#42A5F5"
+        android:background="#00000000"
         android:gravity="center"
         android:padding="60dp"
-        android:src="@drawable/_24"
+        android:src="@drawable/white24"
         android:textColor="#FFFFFF" />
 
     <ImageView
@@ -39,12 +39,11 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@+id/centerHorizontalShim"
-        android:background="#EF5350"
+        android:background="#00000000"
         android:gravity="center"
         android:padding="60dp"
-        android:src="@drawable/_44"
-        android:text="@string/fourfour"
-        android:textColor="#FFFFFF"/>
+        android:src="@drawable/white44"
+        android:textColor="#FFFFFF" />
 
     <ImageView
         android:id="@+id/threeFourButton"
@@ -54,12 +53,11 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/centerHorizontalShim"
-        android:background="#66BB6A"
+        android:background="#00000000"
         android:gravity="center"
         android:padding="60dp"
-        android:src="@drawable/_34"
-        android:text="@string/threefour"
-        android:textColor="#FFFFFF"/>
+        android:src="@drawable/white34"
+        android:textColor="#FFFFFF" />
 
     <ImageView
         android:id="@+id/sixEightButton"
@@ -69,10 +67,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/centerHorizontalShim"
-        android:background="#5C6BC0"
+        android:background="#00000000"
         android:gravity="center"
         android:padding="60dp"
-        android:src="@drawable/_68"
-        android:text="@string/sixeight"
-        android:textColor="#FFFFFF"/>
+        android:src="@drawable/white68"
+        android:text="@string/sixeight" />
 </RelativeLayout>

@@ -6,10 +6,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,12 +21,14 @@ import android.widget.ToggleButton;
 
 import com.example.keytronome.R;
 import com.example.keytronome.viewmodels.MainActivityViewModel;
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 public class MainActivity extends AppCompatActivity {
 
     private MainActivityViewModel mMainActivityViewModel;
 
-    ToggleButton playButton;
+    CircularProgressBar progressBar;
+    TextView playButton;
     private TextView tempoButtonValue;
 
     FragmentManager fm;
@@ -33,33 +39,55 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Hide Action Bar
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){
+            Log.w("MAIN ACTIVITY", "COULD NOT HIDE ACTION BAR");
+        }
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+
         fm = getSupportFragmentManager();
 
         //Initialize the viewmodel
         mMainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         mMainActivityViewModel.init();
 
+        progressBar = findViewById(R.id.circularProgressBar);
+
         //Detect tempo changes
         mMainActivityViewModel.getTempo().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer tempo) {
                 tempoView = (TextView) findViewById(R.id.tempoView);
-                tempoView.setText(tempo.toString() + "bpm");
-                tempoButtonValue.setText(tempo.toString());
-                Log.d("DEBUGB", "Tempo change detected on view");
-                return;
+                tempoView.setText(tempo.toString() + getString(R.string.bpm));
             }
         });
 
 
-
+        //Changes in progress
+        mMainActivityViewModel.getProgress().observe(this, new Observer<Float>() {
+            @Override
+            public void onChanged(Float progress) {
+                Log.d("MAIN ACTIVITY", "PROGRESS: " + progress);
+                progressBar.setProgressWithAnimation(progress, (long) 500);
+            }
+        });
 
         //Main Play button
-        playButton = (ToggleButton) findViewById(R.id.playButton);
-        playButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        playButton = findViewById(R.id.playButton);
+        playButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                mMainActivityViewModel.setIsPlaying(isChecked);
+            public void onClick(View view) {
+                mMainActivityViewModel.setIsPlaying(!mMainActivityViewModel.getIsPlaying().getValue());
             }
         });
 
@@ -67,42 +95,36 @@ public class MainActivity extends AppCompatActivity {
         mMainActivityViewModel.getIsPlaying().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isPlaying) {
-                playButton.setChecked(isPlaying);
+                if (isPlaying){
+                    progressBar.animate().alpha(1.0f).setDuration(1000);
 
-//                if (isPlaying) {
-//                    updateViewPlaying();
-//                } else {
-//                    resetView();
-//                }
+                }else{
+                    progressBar.animate().alpha(0.0f).setDuration(1000);
+                }
             }
         });
 
 
-        //TODO: NEEDS TO BE CHANGED TO CURRENT KEY. CURRENTLY DOESNT MAKE SENSE
         //Set next note observer
         nextKeytv = findViewById(R.id.nextKeyView);
         mMainActivityViewModel.getNextKey().observe(this, new Observer<Pair<Integer, String>>() {
             @Override
             public void onChanged(Pair<Integer, String> nextKey) {
-                nextKeytv.setText("Next Key: " + nextKey.second);
+                String currentKey = mMainActivityViewModel.getCurrentKey().getValue().second;
+                if (mMainActivityViewModel.getIsPlaying().getValue()) {
+                    playButton.setText(currentKey);
+                    nextKeytv.setText(nextKey.second);
+                    Log.d("MAIN ACTIVITY", "Observed next Key change. Current Key: " + currentKey + " Next Key :" + nextKey);
+                } else {
+                    nextKeytv.setText(currentKey);
+                }
             }
         });
 
         initGridMenu();
     }
 
-//    // Resets the view when the app stops playing
-//    private void resetView() {
-//        playButton.setChecked(false);
-//    }
-//
-//    //
-//    private void updateViewPlaying() {
-//    }
-
     private void initGridMenu() {
-        tempoButtonValue = findViewById(R.id.tempoButtonValue);
-        tempoButtonValue.setText(mMainActivityViewModel.getTempo().getValue().toString());
 
         //Time signature changes
         ImageView timeSigImage = findViewById(R.id.timeSignatureImage);
@@ -111,13 +133,13 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(String timeSig) {
 
                 if (timeSig.equals("4/4")) {
-                    timeSigImage.setImageDrawable(getResources().getDrawable(R.drawable._44));
+                    timeSigImage.setImageDrawable(getResources().getDrawable(R.drawable.white44));
                 } else if (timeSig.equals("3/4")) {
-                    timeSigImage.setImageDrawable(getResources().getDrawable(R.drawable._34));
+                    timeSigImage.setImageDrawable(getResources().getDrawable(R.drawable.white34));
                 } else if ((timeSig.equals("2/4"))) {
-                    timeSigImage.setImageDrawable(getResources().getDrawable(R.drawable._24));
+                    timeSigImage.setImageDrawable(getResources().getDrawable(R.drawable.white24));
                 } else if (timeSig.equals("6/8")) {
-                    timeSigImage.setImageDrawable(getResources().getDrawable(R.drawable._68));
+                    timeSigImage.setImageDrawable(getResources().getDrawable(R.drawable.white68));
                 }
             }
         });
@@ -134,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         mMainActivityViewModel.getCycles().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer cycles) {
-                ((TextView) findViewById(R.id.cyclesButtonValue)).setText(cycles.toString());
+                ((TextView) findViewById(R.id.cyclesButtonValue)).setText("x"+cycles.toString());
             }
         });
 
@@ -175,7 +197,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void changeFragment(Fragment fragment) {
         fm.beginTransaction()
-                .setCustomAnimations(R.animator.slide_up, R.animator.slide_down, R.animator.slide_up, R.animator.slide_down)
+//                .setCustomAnimations(R.animator.slide_up, R.animator.slide_down, R.animator.slide_up, R.animator.slide_down)
+                .setCustomAnimations(R.anim.fragment_fade_enter, R.anim.fragment_fade_exit, R.anim.fragment_fade_enter, R.anim.fragment_fade_exit)
                 .replace(R.id.gridLayout, fragment)
                 .addToBackStack(null)
                 .commit();

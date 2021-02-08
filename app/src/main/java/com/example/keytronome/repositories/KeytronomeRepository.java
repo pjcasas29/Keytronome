@@ -77,8 +77,8 @@ public class KeytronomeRepository {
         return model.getKeys();
     }
 
-    public void setIsPlaying(boolean isplaying) {
-        model.setIsPlaying(isplaying);
+    public void setIsPlaying(boolean isPlaying) {
+        model.setIsPlaying(isPlaying);
     }
 
     public void goToNextKey() {
@@ -91,5 +91,13 @@ public class KeytronomeRepository {
 
     public LiveData<Boolean> getIsPlaying() {
         return model.isPlaying();
+    }
+
+    public void setProgress(float progress) {
+        model.setProgress(progress);
+    }
+
+    public LiveData<Float> getProgress() {
+        return model.getProgress();
     }
 }

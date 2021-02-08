@@ -34,7 +34,8 @@ public class KeytronomeModel {
     public MutableLiveData<Pair<Integer, String>> nextKey = new MutableLiveData<>();
     public MutableLiveData<ArrayList<String>> currentKeysList = new MutableLiveData<>();
     public MutableLiveData<Integer> cycles = new MutableLiveData<>();
-    public MutableLiveData<Boolean> isPlaying= new MutableLiveData<>();
+    public MutableLiveData<Boolean> isPlaying = new MutableLiveData<>();
+    public MutableLiveData<Float> progress= new MutableLiveData<>();
 
     public KeytronomeModel() {
         tempo.setValue(DEFAULT_TEMPO);
@@ -42,6 +43,7 @@ public class KeytronomeModel {
         keyOrder.setValue(DEFAULT_KEY_ORDER);
         startingKey.setValue(DEFAULT_STARTING_KEY);
         cycles.setValue(DEFAULT_CYCLES);
+        isPlaying.setValue(false);
         this.setActiveKeysList();
         resetKeyPositions();
 
@@ -120,6 +122,7 @@ public class KeytronomeModel {
             }
         }
         this.currentKeysList.setValue(result);
+        this.resetKeyPositions();
     }
 
     public LiveData<Pair<Integer, String>> getNextKey() {
@@ -147,18 +150,19 @@ public class KeytronomeModel {
     }
 
     private void resetKeyPositions(){
-        this.currentKey.setValue(new Pair<Integer, String>(0, this.currentKeysList.getValue().get(0)));
-        this.nextKey.setValue(new Pair<Integer, String>(1, this.currentKeysList.getValue().get(1)));
+        this.currentKey.postValue(new Pair<Integer, String>(0, this.currentKeysList.getValue().get(0)));
+        this.nextKey.postValue(new Pair<Integer, String>(1, this.currentKeysList.getValue().get(1)));
     }
 
     public void setIsPlaying(boolean changeIsPlaying) {
         if(!changeIsPlaying){
             resetKeyPositions();
+            setProgress(0);
         }else//Set to true TODO: WHATEVER NEEDS TO GO HERE
         {
 
         }
-        this.isPlaying.setValue(changeIsPlaying);
+        this.isPlaying.postValue(changeIsPlaying);
     }
 
     public LiveData<Boolean> isPlaying(){
@@ -166,7 +170,17 @@ public class KeytronomeModel {
     }
 
     public void goToNextKey() {
+        this.nextKey.postValue(this.currentKey.getValue());
         int nextIndex = (getCurrentKey().getValue().first + 1) % this.getActiveKeysList().getValue().size();
         this.currentKey.postValue(new Pair<Integer, String>(nextIndex, this.currentKeysList.getValue().get(nextIndex)));
+    }
+
+
+    public void setProgress(float progress) {
+        this.progress.postValue(progress);
+    }
+
+    public LiveData<Float> getProgress() {
+        return this.progress;
     }
 }
