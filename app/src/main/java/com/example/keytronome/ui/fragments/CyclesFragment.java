@@ -1,4 +1,4 @@
-package com.example.keytronome.ui;
+package com.example.keytronome.ui.fragments;
 
 import android.os.Bundle;
 

@@ -18,4 +18,6 @@
     <string name="bpm">bpm</string>
     <string name="keytronome_button_font_size">14</string>
     <string name="keytronome_play_Button_font_size">80</string>
+    <string name="measure_per_key_prefix">MPK:</string>
+    <string name="mpk_button_title">Measures per key:</string>
 </resources>

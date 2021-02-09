@@ -1,4 +1,4 @@
-package com.example.keytronome.ui;
+package com.example.keytronome.ui.fragments;
 
 import android.os.Bundle;
 
@@ -25,60 +25,59 @@ import travel.ithaka.android.horizontalpickerlib.PickerLayoutManager;
 
 /**
  * A simple {@link Fragment} subclass.
+ * create an instance of this fragment.
  */
-public class TempoScrollerFragment extends Fragment {
+public class MpkFragment extends Fragment {
 
-    private RecyclerView rvHorizontalPicker;
-    private TextView tvSelectedItem;
     PickerAdapter adapter;
     MainActivityViewModel viewModel;
 
-    public TempoScrollerFragment() {
-        // Required empty public constructor
+
+
+    public MpkFragment() {
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        return inflater.inflate(R.layout.fragment_tempo_scroller, container, false);
-
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_mpk, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Inflate the layout for this fragment
+
         viewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
 
-        //Set the scrollablle tempo
-        RecyclerView recyclerViewTempo = getActivity().findViewById(R.id.rvtempo);
+        //Set the scrollablle items
+        RecyclerView recyclerView = getActivity().findViewById(R.id.rvmpk);
         PickerLayoutManager pickerLayoutManager = new PickerLayoutManager(getActivity(), PickerLayoutManager.HORIZONTAL, false);
         pickerLayoutManager.setChangeAlpha(true);
         pickerLayoutManager.setScaleDownBy(0.99f);
         pickerLayoutManager.setScaleDownDistance(0.95f);
 
 
-        adapter = new PickerAdapter(getActivity(), populateTempos(viewModel.getMaxTempo()), recyclerViewTempo);
-        recyclerViewTempo.setAdapter(adapter);
+        adapter = new PickerAdapter(getActivity(), populateMpk(viewModel.getMaxMpk()), recyclerView);
+        recyclerView.setAdapter(adapter);
 
         SnapHelper snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(recyclerViewTempo);
-        recyclerViewTempo.setLayoutManager(pickerLayoutManager);
-        pickerLayoutManager.scrollToPosition(viewModel.getTempo().getValue() - viewModel.getMinTempo());
+        snapHelper.attachToRecyclerView(recyclerView);
+        recyclerView.setLayoutManager(pickerLayoutManager);
+        pickerLayoutManager.scrollToPosition(viewModel.getMpk().getValue() - 1);
         pickerLayoutManager.setOnScrollStopListener(new PickerLayoutManager.onScrollStopListener() {
             @Override
             public void selectedView(View view) {
-                viewModel.setTempo(Integer.parseInt(((TextView) view).getText().toString()));
+                viewModel.setMpk(Integer.parseInt(((TextView) view).getText().toString()));
             }
         });
-
     }
 
-    private List<String> populateTempos(int count){
+    private List<String> populateMpk(int count) {
         List<String> data = new ArrayList<>();
-        for(int i = viewModel.getMinTempo(); i < count; i++){
-            data.add(String.valueOf(i));
+        for (int i = 0; i < count; i++) {
+            data.add(String.valueOf(i + 1));
         }
         return data;
     }

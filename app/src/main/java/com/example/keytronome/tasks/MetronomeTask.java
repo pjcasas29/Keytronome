@@ -25,14 +25,16 @@ public class MetronomeTask implements Runnable {
     private Integer bpm;
     private int beatsPerMeasure;
     private int totalBeats;
+    private int mpk;
 
     public MetronomeTask(final MainActivityViewModel viewModel, Context context) {
         this.viewModel = viewModel;
 
         this.bpm = this.viewModel.getTempo().getValue();
         this.beatsPerMeasure = this.viewModel.getBeatsPerMeasure();
-        this.totalBeats = this.beatsPerMeasure * this.viewModel.getActiveKeysList().getValue().size();
+        this.mpk = this.viewModel.getMpk().getValue();
 
+        this.totalBeats = this.beatsPerMeasure*this.viewModel.getActiveKeysList().getValue().size()*this.mpk;
 
         this.context = context;
         this.tickId = DEFAULT_TICK_ID;
@@ -61,23 +63,32 @@ public class MetronomeTask implements Runnable {
         boolean playing = true;
         try {
             while (this.viewModel.getIsPlaying().getValue() && playing) {
+
                 if (this.executionTick == this.totalBeats) {
+                    //Stop metronome
                     mSoundPool.release();
                     playing = false;
-                    //this.viewModel.stopMetronome();
                 } else if(this.executionTick % beatsPerMeasure == 0){
+                    //One measure
                     mSoundPool.play(loadPingId, 1.0f, 1.0f, 1, 0, 1.0f);
                     Log.i("METRONOME THREAD", "Current Key: " + this.viewModel.getCurrentKey().getValue());
-                    this.viewModel.goToNextKey();
-                    Thread.sleep((long) (1000 * (60.0 / this.bpm)));
-                    this.executionTick++;
                 }
                 else {
+                    //Tick in between
                     mSoundPool.play(loadTickId, 1.0f, 1.0f, 1, 0, 1.0f);
-                    //Log.i("METRONOME THREAD", this.executionTick++ + ": ");
-                    Thread.sleep((long) (1000 * (60.0 / this.bpm)));
-                    this.executionTick++;
                 }
+
+                //End of key
+                if(this.executionTick % (beatsPerMeasure*mpk) == 0){
+                    this.viewModel.goToNextKey();
+                }
+
+                //Sleep for correct BPM
+                Thread.sleep((long) (1000 * (60.0 / this.bpm)));
+
+                this.executionTick++;
+
+                //Setting progress
                 this.viewModel.setProgress(((float)this.executionTick / (float)this.totalBeats)*100);
             }
         } catch (InterruptedException ie) {

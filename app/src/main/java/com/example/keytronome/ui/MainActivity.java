@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,12 +13,15 @@ import android.util.Pair;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.example.keytronome.R;
+import com.example.keytronome.ui.fragments.CyclesFragment;
+import com.example.keytronome.ui.fragments.MpkFragment;
+import com.example.keytronome.ui.fragments.StartingKeyFragment;
+import com.example.keytronome.ui.fragments.TempoScrollerFragment;
+import com.example.keytronome.ui.fragments.TimeSignatureFragment;
 import com.example.keytronome.viewmodels.MainActivityViewModel;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
@@ -163,10 +165,20 @@ public class MainActivity extends AppCompatActivity {
         mMainActivityViewModel.getCycles().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer cycles) {
-                ((TextView) findViewById(R.id.cyclesButtonValue)).setText("x"+cycles.toString());
+                ((TextView) findViewById(R.id.cyclesButtonValue)).setText(String.format("x%s", cycles.toString()));
             }
         });
 
+        mMainActivityViewModel.getMpk().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer mpk) {
+                TextView mpkTv = findViewById(R.id.mpk_tv);
+                mpkTv.setText(String.format("%s %s", getResources().getString(R.string.measure_per_key_prefix), mpk.toString()));
+            }
+        });
+
+
+        //On click listeners
         View tempoButton = findViewById(R.id.tempoButton);
         tempoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,6 +208,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 changeFragment(new CyclesFragment());
+            }
+        });
+
+        View mpkButton = findViewById(R.id.mpkButton);
+        mpkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeFragment(new MpkFragment());
             }
         });
 

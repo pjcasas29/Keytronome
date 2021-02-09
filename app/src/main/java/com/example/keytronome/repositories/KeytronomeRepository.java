@@ -100,4 +100,16 @@ public class KeytronomeRepository {
     public LiveData<Float> getProgress() {
         return model.getProgress();
     }
+
+    public int getMaxMpk() {
+        return model.getMaxMpk();
+    }
+
+    public void setMpk(int newMpk) {
+        model.setMpk(newMpk);
+    }
+
+    public LiveData<Integer> getMpk() {
+        return model.getMpk();
+    }
 }

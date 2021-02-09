@@ -15,15 +15,17 @@ import java.util.Random;
  */
 public class KeytronomeModel {
     //Default values
-    private final Integer MINIMUM_TEMPO = 40;
-    private final int MAX_TEMPO = 300;
-    private final int DEFAULT_TEMPO = 120;
-    private final int MAX_CYCLES = 10;
-    private final int DEFAULT_CYCLES = 1;
-    private final String DEFAULT_TIMESIG = "4/4";
-    private final String DEFAULT_KEY_ORDER = "chromatic";
-    private final String DEFAULT_STARTING_KEY = "C";
-    private String[] mKeys = {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"};
+    private static final Integer MINIMUM_TEMPO = 40;
+    private static final int MAX_TEMPO = 300;
+    private static final int DEFAULT_TEMPO = 120;
+    private static final int MAX_CYCLES = 10;
+    private static final int DEFAULT_CYCLES = 1;
+    private static final String DEFAULT_TIMESIG = "4/4";
+    private static final String DEFAULT_KEY_ORDER = "chromatic";
+    private static final String DEFAULT_STARTING_KEY = "C";
+    private static final int MAX_MPK = 6;
+    private static final int DEFAULT_MPK = 2;
+    private static String[] mKeys = {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"};
     private final ArrayList<String> keys = new ArrayList<>(Arrays.asList(mKeys));
 
     public MutableLiveData<String> startingKey = new MutableLiveData<>();
@@ -36,6 +38,7 @@ public class KeytronomeModel {
     public MutableLiveData<Integer> cycles = new MutableLiveData<>();
     public MutableLiveData<Boolean> isPlaying = new MutableLiveData<>();
     public MutableLiveData<Float> progress= new MutableLiveData<>();
+    public MutableLiveData<Integer> mpk = new MutableLiveData<>();
 
     public KeytronomeModel() {
         tempo.setValue(DEFAULT_TEMPO);
@@ -44,6 +47,7 @@ public class KeytronomeModel {
         startingKey.setValue(DEFAULT_STARTING_KEY);
         cycles.setValue(DEFAULT_CYCLES);
         isPlaying.setValue(false);
+        mpk.setValue(DEFAULT_MPK);
         this.setActiveKeysList();
         resetKeyPositions();
 
@@ -182,5 +186,17 @@ public class KeytronomeModel {
 
     public LiveData<Float> getProgress() {
         return this.progress;
+    }
+
+    public int getMaxMpk() {
+        return MAX_MPK;
+    }
+
+    public void setMpk(int newMpk) {
+        mpk.setValue(newMpk);
+    }
+
+    public LiveData<Integer> getMpk() {
+        return this.mpk;
     }
 }

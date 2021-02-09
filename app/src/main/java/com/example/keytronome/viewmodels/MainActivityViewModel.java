@@ -134,4 +134,16 @@ public class MainActivityViewModel extends AndroidViewModel {
     public LiveData<Float> getProgress() {
         return mRepo.getProgress();
     }
+
+    public int getMaxMpk() {
+        return mRepo.getMaxMpk();
+    }
+
+    public void setMpk(int newMpk) {
+        mRepo.setMpk(newMpk);
+    }
+
+    public LiveData<Integer> getMpk() {
+        return mRepo.getMpk();
+    }
 }

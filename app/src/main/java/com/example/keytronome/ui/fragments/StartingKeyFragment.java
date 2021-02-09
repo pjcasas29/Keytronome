@@ -1,4 +1,4 @@
-package com.example.keytronome.ui;
+package com.example.keytronome.ui.fragments;
 
 import android.os.Bundle;
 
@@ -19,7 +19,6 @@ import com.example.keytronome.R;
 import com.example.keytronome.viewmodels.MainActivityViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import travel.ithaka.android.horizontalpickerlib.PickerLayoutManager;
 
