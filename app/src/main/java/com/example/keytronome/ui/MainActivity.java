@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.example.keytronome.R;
 import com.example.keytronome.ui.fragments.CyclesFragment;
 import com.example.keytronome.ui.fragments.MpkFragment;
-import com.example.keytronome.ui.fragments.StartingKeyFragment;
+import com.example.keytronome.ui.fragments.OrderFragment;
 import com.example.keytronome.ui.fragments.TempoScrollerFragment;
 import com.example.keytronome.ui.fragments.TimeSignatureFragment;
 import com.example.keytronome.viewmodels.MainActivityViewModel;
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         startingKeyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeFragment(new StartingKeyFragment());
+                changeFragment(new OrderFragment());
             }
         });
 

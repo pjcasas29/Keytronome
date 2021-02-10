@@ -15,19 +15,28 @@ import java.util.Random;
  */
 public class KeytronomeModel {
     //Default values
+    private static final String CHROMATIC = "Chromatic";
+    private static final String FOURTHS = "Fourths";
+    private static final String FIFTHS = "Fifths";
+    private static final String RANDOM = "Random";
+    private static final String THIRDS = "Thirds";
+    private static final String WHOLE_STEPS = "Whole Steps";
+    private static final String DEFAULT_KEY_ORDER = CHROMATIC;
+    private static final String[] ORDERS = {CHROMATIC, FOURTHS, FIFTHS, RANDOM, THIRDS, WHOLE_STEPS};
     private static final Integer MINIMUM_TEMPO = 40;
     private static final int MAX_TEMPO = 300;
     private static final int DEFAULT_TEMPO = 120;
     private static final int MAX_CYCLES = 10;
     private static final int DEFAULT_CYCLES = 1;
     private static final String DEFAULT_TIMESIG = "4/4";
-    private static final String DEFAULT_KEY_ORDER = "chromatic";
-    private static final String DEFAULT_STARTING_KEY = "C";
+    private static final String[] mKeys = {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"};
+    private static final ArrayList<String> keys = new ArrayList<>(Arrays.asList(mKeys));
+    private static final String DEFAULT_STARTING_KEY = keys.get(0);
     private static final int MAX_MPK = 6;
     private static final int DEFAULT_MPK = 2;
-    private static String[] mKeys = {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"};
-    private final ArrayList<String> keys = new ArrayList<>(Arrays.asList(mKeys));
 
+    //State variables
+    public MutableLiveData<Boolean> ascending = new MutableLiveData<>();
     public MutableLiveData<String> startingKey = new MutableLiveData<>();
     public MutableLiveData<String> keyOrder = new MutableLiveData<>();
     public MutableLiveData<Integer> tempo = new MutableLiveData<>();
@@ -40,6 +49,7 @@ public class KeytronomeModel {
     public MutableLiveData<Float> progress= new MutableLiveData<>();
     public MutableLiveData<Integer> mpk = new MutableLiveData<>();
 
+    //Initialize default values
     public KeytronomeModel() {
         tempo.setValue(DEFAULT_TEMPO);
         timeSig.setValue(DEFAULT_TIMESIG);
@@ -48,9 +58,8 @@ public class KeytronomeModel {
         cycles.setValue(DEFAULT_CYCLES);
         isPlaying.setValue(false);
         mpk.setValue(DEFAULT_MPK);
+        ascending.setValue(true);
         this.setActiveKeysList();
-        resetKeyPositions();
-
     }
 
     public void setTempo(int bpm) {
@@ -113,11 +122,11 @@ public class KeytronomeModel {
         for(int c = 0; c < this.cycles.getValue(); c++) {
 
 
-            if (this.keyOrder.getValue().equals("chromatic")) {
+            if (this.keyOrder.getValue().equals(CHROMATIC)) {
                 for (int i = 0; i < keys.size(); i++) {
                     result.add(keys.get((startingIndex + i) % keys.size()));
                 }
-            } else if (this.keyOrder.getValue().equals("random")) {
+            } else if (this.keyOrder.getValue().equals(RANDOM)) {
                 for (int i = 0; i < keys.size(); i++) {
                     result.add(keys.get(new Random().nextInt(keys.size())));
                 }
@@ -154,8 +163,8 @@ public class KeytronomeModel {
     }
 
     private void resetKeyPositions(){
-        this.currentKey.postValue(new Pair<Integer, String>(0, this.currentKeysList.getValue().get(0)));
-        this.nextKey.postValue(new Pair<Integer, String>(1, this.currentKeysList.getValue().get(1)));
+        this.currentKey.postValue(new Pair<>(0, this.currentKeysList.getValue().get(0)));
+        this.nextKey.postValue(new Pair<>(1, this.currentKeysList.getValue().get(1)));
     }
 
     public void setIsPlaying(boolean changeIsPlaying) {
@@ -198,5 +207,17 @@ public class KeytronomeModel {
 
     public LiveData<Integer> getMpk() {
         return this.mpk;
+    }
+
+    public LiveData<String> getOrder() {
+        return keyOrder;
+    }
+
+    public ArrayList<String> getOrders() {
+        return new ArrayList<>(Arrays.asList(ORDERS));
+    }
+
+    public void setOrder(String newOrder) {
+        keyOrder.setValue(newOrder);
     }
 }

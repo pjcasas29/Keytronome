@@ -112,4 +112,16 @@ public class KeytronomeRepository {
     public LiveData<Integer> getMpk() {
         return model.getMpk();
     }
+
+    public LiveData<String> getOrder() {
+        return model.getOrder();
+    }
+
+    public ArrayList<String> getOrders() {
+        return model.getOrders();
+    }
+
+    public void setOrder(String newOrder) {
+        model.setOrder(newOrder);
+    }
 }

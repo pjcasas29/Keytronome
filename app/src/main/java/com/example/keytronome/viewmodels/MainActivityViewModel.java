@@ -146,4 +146,16 @@ public class MainActivityViewModel extends AndroidViewModel {
     public LiveData<Integer> getMpk() {
         return mRepo.getMpk();
     }
+
+    public LiveData<String> getOrder() {
+        return mRepo.getOrder();
+    }
+
+    public ArrayList<String> getOrders() {
+        return mRepo.getOrders();
+    }
+
+    public void setOrder(String newOrder) {
+        mRepo.setOrder(newOrder);
+    }
 }
