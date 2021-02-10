@@ -63,28 +63,28 @@ public class OrderFragment extends Fragment {
 
         //Set scrollable orders
 
-        RecyclerView recyclerViewOrder = getActivity().findViewById(R.id.rvOrder);
-        PickerLayoutManager pickerLayoutManagerOrder = new PickerLayoutManager(getActivity(), PickerLayoutManager.VERTICAL, false);
-        pickerLayoutManagerOrder.setChangeAlpha(true);
-        pickerLayoutManagerOrder.setScaleDownBy(0.99f);
-        pickerLayoutManagerOrder.setScaleDownDistance(0.95f);
-
-        ArrayList<String> orderList = viewModel.getOrders();
-        Log.d("ORDER FRAGMENT", "ORDER LIST: " + orderList);
-        adapterOrders = new PickerAdapter(getActivity(), orderList, recyclerViewOrder);
-        recyclerViewOrder.setAdapter(adapterOrders);
-
-        SnapHelper snapHelperOrder = new LinearSnapHelper();
-        snapHelperOrder.attachToRecyclerView(recyclerViewOrder);
-        recyclerViewOrder.setLayoutManager(pickerLayoutManagerOrder);
-        pickerLayoutManagerOrder.scrollToPosition(orderList.indexOf(viewModel.getOrder().getValue()));
-        pickerLayoutManagerOrder.setOnScrollStopListener(new PickerLayoutManager.onScrollStopListener() {
-            @Override
-            public void selectedView(View view) {
-                TextView selectedView = (TextView) view;
-                viewModel.setOrder((String) selectedView.getText());
-            }
-        });
+//        RecyclerView recyclerViewOrder = getActivity().findViewById(R.id.rvOrder);
+//        PickerLayoutManager pickerLayoutManagerOrder = new PickerLayoutManager(getActivity(), PickerLayoutManager.VERTICAL, false);
+//        pickerLayoutManagerOrder.setChangeAlpha(true);
+//        pickerLayoutManagerOrder.setScaleDownBy(0.99f);
+//        pickerLayoutManagerOrder.setScaleDownDistance(0.95f);
+//
+//        ArrayList<String> orderList = viewModel.getOrders();
+//        Log.d("ORDER FRAGMENT", "ORDER LIST: " + orderList);
+//        adapterOrders = new PickerAdapter(getActivity(), orderList, recyclerViewOrder);
+//        recyclerViewOrder.setAdapter(adapterOrders);
+//
+//        SnapHelper snapHelperOrder = new LinearSnapHelper();
+//        snapHelperOrder.attachToRecyclerView(recyclerViewOrder);
+//        recyclerViewOrder.setLayoutManager(pickerLayoutManagerOrder);
+//        pickerLayoutManagerOrder.scrollToPosition(orderList.indexOf(viewModel.getOrder().getValue()));
+//        pickerLayoutManagerOrder.setOnScrollStopListener(new PickerLayoutManager.onScrollStopListener() {
+//            @Override
+//            public void selectedView(View view) {
+//                TextView selectedView = (TextView) view;
+//                viewModel.setOrder((String) selectedView.getText());
+//            }
+//        });
 
         //Set the scrollable starting keys
         RecyclerView recyclerViewKeys = getActivity().findViewById(R.id.rvStartingKey);

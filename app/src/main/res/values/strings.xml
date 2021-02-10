@@ -20,4 +20,10 @@
     <string name="keytronome_play_Button_font_size">80</string>
     <string name="measure_per_key_prefix">MPK:</string>
     <string name="mpk_button_title">Measures per key:</string>
+    <string name="chromatic">Chromatic</string>
+    <string name="fourths">Fourths</string>
+    <string name="fifths">Fifths</string>
+    <string name="random">Random</string>
+    <string name="wholeSteps">Whole Steps</string>
+    <string name="thirds">Thirds</string>
 </resources>
