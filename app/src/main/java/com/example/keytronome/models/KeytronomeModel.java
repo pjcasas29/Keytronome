@@ -121,17 +121,27 @@ public class KeytronomeModel {
         //This loop multiplies the list by the number of cycles
         for(int c = 0; c < this.cycles.getValue(); c++) {
 
+            switch(this.keyOrder.getValue()){
+                case CHROMATIC:
+                    for (int i = 0; i < keys.size(); i++) {
+                        result.add(keys.get((startingIndex + i) % keys.size()));
+                    }
+                    break;
+                case RANDOM:
+                    for (int i = 0; i < keys.size(); i++) {
+                        result.add(keys.get(new Random().nextInt(keys.size())));
+                    }
+                    break;
+                case FOURTHS:
+                    for(int i = 0; i<keys.size(); i++){
+                        result.add(keys.get(((startingIndex + i) * 4) % keys.size()));
+                    }
+                case THIRDS:
+                case FIFTHS:
+                case WHOLE_STEPS:
+                default:
+                    result.add("No Keys");
 
-            if (this.keyOrder.getValue().equals(CHROMATIC)) {
-                for (int i = 0; i < keys.size(); i++) {
-                    result.add(keys.get((startingIndex + i) % keys.size()));
-                }
-            } else if (this.keyOrder.getValue().equals(RANDOM)) {
-                for (int i = 0; i < keys.size(); i++) {
-                    result.add(keys.get(new Random().nextInt(keys.size())));
-                }
-            } else {
-                result.add("No Keys");
             }
         }
         this.currentKeysList.setValue(result);

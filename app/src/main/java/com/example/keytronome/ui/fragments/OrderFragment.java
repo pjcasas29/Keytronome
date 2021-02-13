@@ -1,5 +1,6 @@
 package com.example.keytronome.ui.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.example.keytronome.R;
 import com.example.keytronome.viewmodels.MainActivityViewModel;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import travel.ithaka.android.horizontalpickerlib.PickerLayoutManager;
 
@@ -35,7 +37,12 @@ public class OrderFragment extends Fragment {
     MainActivityViewModel viewModel;
 
     private View chromaticButton;
-
+    private View fourthsButton;
+    private View fifthsButton;
+    private View thirdsButton;
+    private View randomButton;
+    private View wholeStepsButton;
+    private ArrayList<View> buttons = new ArrayList<>();
 
     public OrderFragment() {
         // Required empty public constructor
@@ -66,13 +73,20 @@ public class OrderFragment extends Fragment {
 
         //Order buttons
 
-        View chromaticButton = getActivity().findViewById(R.id.chromaticButton);
+        buttons.add(getActivity().findViewById(R.id.chromaticButton));
+        buttons.add(getActivity().findViewById(R.id.fifthsButton));
+        buttons.add(getActivity().findViewById(R.id.thirdsButton));
+        buttons.add(getActivity().findViewById(R.id.randomButton));
+        buttons.add(getActivity().findViewById(R.id.wholeStepsButton));
+        buttons.add(getActivity().findViewById(R.id.fourthsButton));
 
-        View fifthsButton = getActivity().findViewById(R.id.fifthsButton);
+        buttons.forEach((button)-> button.setOnClickListener(v -> {
+            viewSelected(v);
+        }));
 
-        View thirdsButton = getActivity().findViewById(R.id.thirdsButton);
-
-
+        //Selects current active order
+        String order = viewModel.getOrder().getValue();
+        viewSelected(buttons.stream().filter(button -> ((TextView)((ViewGroup) button).getChildAt(0)).getText().equals(order)).collect(Collectors.toList()).get(0));
 
         //Set the scrollable starting keys
         RecyclerView recyclerViewKeys = getActivity().findViewById(R.id.rvStartingKey);
@@ -97,5 +111,13 @@ public class OrderFragment extends Fragment {
                 viewModel.setStartingKey((String) selectedView.getText());
             }
         });
+    }
+
+    private void viewSelected(View view) {
+        String unfocusedColor = "#00ffffff";
+        buttons.forEach(button -> button.setBackgroundColor(Color.parseColor(unfocusedColor)));
+        //focused
+        view.setBackgroundColor(Color.parseColor("#10ffffff"));
+        viewModel.setOrder((String) ((TextView)(((ViewGroup) view).getChildAt(0))).getText());
     }
 }
