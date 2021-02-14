@@ -81,12 +81,12 @@ public class OrderFragment extends Fragment {
         buttons.add(getActivity().findViewById(R.id.fourthsButton));
 
         buttons.forEach((button)-> button.setOnClickListener(v -> {
-            viewSelected(v);
+            viewSelected(v, true);
         }));
 
         //Selects current active order
         String order = viewModel.getOrder().getValue();
-        viewSelected(buttons.stream().filter(button -> ((TextView)((ViewGroup) button).getChildAt(0)).getText().equals(order)).collect(Collectors.toList()).get(0));
+        viewSelected(buttons.stream().filter(button -> ((TextView)((ViewGroup) button).getChildAt(0)).getText().equals(order)).collect(Collectors.toList()).get(0), false);
 
         //Set the scrollable starting keys
         RecyclerView recyclerViewKeys = getActivity().findViewById(R.id.rvStartingKey);
@@ -113,11 +113,13 @@ public class OrderFragment extends Fragment {
         });
     }
 
-    private void viewSelected(View view) {
+    private void viewSelected(View view, boolean setOrder) {
         String unfocusedColor = "#00ffffff";
         buttons.forEach(button -> button.setBackgroundColor(Color.parseColor(unfocusedColor)));
         //focused
         view.setBackgroundColor(Color.parseColor("#10ffffff"));
-        viewModel.setOrder((String) ((TextView)(((ViewGroup) view).getChildAt(0))).getText());
+        if(setOrder){
+            viewModel.setOrder((String) ((TextView)(((ViewGroup) view).getChildAt(0))).getText());
+        }
     }
 }

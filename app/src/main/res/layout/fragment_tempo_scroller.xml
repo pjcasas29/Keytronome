@@ -30,14 +30,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"/>
+        app:layout_constraintTop_toBottomOf="@+id/backArrowTempo"/>
+
 
     <ImageView
-        android:id="@+id/imageView"
+        android:contentDescription="@string/back_arrow"
+        android:id="@+id/backArrowTempo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:padding="15dp"
-        android:src="@android:drawable/arrow_down_float"
+        android:layout_height="50dp"
+        android:src="@drawable/back_arrow_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

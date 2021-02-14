@@ -26,4 +26,9 @@
     <string name="random">Random</string>
     <string name="wholeSteps">Whole Steps</string>
     <string name="thirds">Thirds</string>
+    <string name="back_arrow">back arrow</string>
+    <string name="two_four_time_signature">two four time signature</string>
+    <string name="four_four_time_signature">four four time signature</string>
+    <string name="three_four_time_signature">three four time signature</string>
+    <string name="six_eight_time_signature">six eight time signature</string>
 </resources>

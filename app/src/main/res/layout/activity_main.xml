@@ -2,15 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main_activity"
     android:animateLayoutChanges="true"
     android:background="@drawable/wallpaperbluepurple"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:weightSum="100"
     android:paddingTop="15dp"
+    android:weightSum="100"
     tools:context=".ui.MainActivity">
 
     <RelativeLayout
@@ -24,29 +24,54 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/keytronomeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/playButton"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_margin="35dp"
+            android:fontFamily="@font/bebas"
+            android:gravity="center"
+            android:alpha="0"
+            android:text="@string/app_name"
+            android:textSize="30sp" />
+
         <FrameLayout
+            android:id="@+id/playButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true">
+            android:layout_centerVertical="true"
+            android:background="@drawable/circularbutton">
 
 
             <TextView
-                android:id="@+id/playButton"
+                android:id="@+id/playButtonTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:width="90dp"
-                android:height="90dp"
-                android:textSize="80sp"
-                android:background="@drawable/circularbutton"
-                android:gravity="center" />
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:alpha="0"
+                android:textSize="80sp" />
+
+            <ImageView
+                android:id="@+id/playButtonIv"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:src="@drawable/play_white"
+                />
 
 
         </FrameLayout>
 
 
         <LinearLayout
+            android:alpha="0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -68,7 +93,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:text="A"/>
         </LinearLayout>
 
         <com.mikhaellopez.circularprogressbar.CircularProgressBar
@@ -87,7 +113,17 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/keysOrderTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="40dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/divider" />
+
     <View
+        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginHorizontal="25dp"
@@ -119,8 +155,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_centerInParent="true">
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/tempoButtonTitle"
@@ -135,11 +171,11 @@
                     android:id="@+id/tempoView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:textSize="18sp"
                     android:layout_gravity="center"
+                    android:layout_marginStart="0dp"
                     android:text="120bpm"
-                    android:textColor="#FFFFFFFF" />
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="18sp" />
             </LinearLayout>
 
         </RelativeLayout>
@@ -170,8 +206,8 @@
                 android:layout_marginBottom="20dip"
                 android:background="#00000000"
                 android:padding="12dip"
-                android:textStyle="bold"
-                android:textColor="#ffffffff" />
+                android:textColor="#ffffffff"
+                android:textStyle="bold" />
 
 
         </RelativeLayout>
@@ -184,15 +220,16 @@
             android:layout_columnWeight="1"
             android:background="@drawable/border"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/mpk_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
                 android:text="@string/measure_per_key_prefix"
-                android:textSize="30sp"
-                />
+                android:textSize="30sp" />
 
         </RelativeLayout>
 
@@ -213,7 +250,7 @@
                 android:src="@drawable/white44" />
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/startingKeyButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -222,21 +259,26 @@
             android:background="@drawable/border"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/startingKeyTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="@string/starting_key_button_title" />
 
             <TextView
-                android:id="@+id/startingKeyValue"
+                android:id="@+id/orderButtonTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="30dp"
-                android:text="C" />
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                android:textSize="22dp"/>
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/startingKeyButtonTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/orderButtonTv"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:layout_centerInParent="true"
+                />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/button"

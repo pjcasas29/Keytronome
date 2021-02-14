@@ -13,6 +13,8 @@ import android.util.Pair;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,35 +27,55 @@ import com.example.keytronome.ui.fragments.TimeSignatureFragment;
 import com.example.keytronome.viewmodels.MainActivityViewModel;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private MainActivityViewModel mMainActivityViewModel;
 
     CircularProgressBar progressBar;
-    TextView playButton;
+    TextView playButtonTv;
     private TextView tempoButtonValue;
 
     FragmentManager fm;
     private TextView tempoView;
     private TextView nextKeytv;
+    private View playButton;
+    private ImageView playButtonIv;
+    private TextView titleTv;
+    private TextView orderTv;
+    private TextView startingKeyButtonTv;
+    private TextView orderButtonTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set views here
+        progressBar = findViewById(R.id.circularProgressBar);
+        playButton = findViewById(R.id.playButton);
+        nextKeytv = findViewById(R.id.nextKeyView);
+        playButtonTv = findViewById(R.id.playButtonTv);
+        playButtonIv = findViewById(R.id.playButtonIv);
+        titleTv = findViewById(R.id.keytronomeTv);
+        orderTv = findViewById(R.id.keysOrderTv);
+        startingKeyButtonTv = findViewById(R.id.startingKeyButtonTv);
+        orderButtonTv = findViewById(R.id.orderButtonTv);
+
         //Set top padding for status bar
         findViewById(R.id.main_activity).setPadding(0, getStatusBarHeight(), 0, 0);
 
         //Hide Action Bar
-        try
-        {
+        try {
             this.getSupportActionBar().hide();
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e) {
             Log.w("MAIN ACTIVITY", "COULD NOT HIDE ACTION BAR");
         }
 
+        //Animate title
+        findViewById(R.id.keytronomeTv).animate().alpha(1.0f).setDuration(2000);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow();
@@ -66,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
         mMainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         mMainActivityViewModel.init();
 
-        progressBar = findViewById(R.id.circularProgressBar);
 
         //Detect tempo changes
         mMainActivityViewModel.getTempo().observe(this, new Observer<Integer>() {
@@ -88,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Main Play button
-        playButton = findViewById(R.id.playButton);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,33 +120,72 @@ public class MainActivity extends AppCompatActivity {
         mMainActivityViewModel.getIsPlaying().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isPlaying) {
-                if (isPlaying){
+                if (isPlaying) {
                     progressBar.animate().alpha(1.0f).setDuration(1000);
-                    playButton.setTextSize(Float.parseFloat(getResources().getString(R.string.keytronome_play_Button_font_size)));
+                    playButtonIv.animate().alpha(0.0f).setDuration(1000);
+                    playButtonTv.animate().alpha(1.0f).setDuration(1000);
+                    nextKeytv.animate().alpha(1.0f).setDuration(1000);
+                    titleTv.animate().alpha(0.0f).setDuration(1000);
+                    orderTv.animate().alpha(0.0f).setDuration(1000);
 
-
-                }else{
+                } else {
                     progressBar.animate().alpha(0.0f).setDuration(1000);
-                    playButton.setText(R.string.app_name);
-                    playButton.setTextSize(Float.parseFloat(getResources().getString(R.string.keytronome_button_font_size)));
+                    playButtonIv.animate().alpha(1.0f).setDuration(1000);
+                    playButtonTv.animate().alpha(0.0f).setDuration(1000);
+                    nextKeytv.animate().alpha(0.0f).setDuration(1000);
+                    titleTv.animate().alpha(1.0f).setDuration(1000);
+                    orderTv.animate().alpha(1.0f).setDuration(1000);
                 }
             }
         });
 
 
-        //Set next note observer
-        nextKeytv = findViewById(R.id.nextKeyView);
+        //Set next key observer
         mMainActivityViewModel.getNextKey().observe(this, new Observer<Pair<Integer, String>>() {
             @Override
             public void onChanged(Pair<Integer, String> nextKey) {
-                String currentKey = mMainActivityViewModel.getCurrentKey().getValue().second;
-                if (mMainActivityViewModel.getIsPlaying().getValue()) {
-                    playButton.setText(currentKey);
-                    nextKeytv.setText(nextKey.second);
-                    Log.d("MAIN ACTIVITY", "Observed next Key change. Current Key: " + currentKey + " Next Key :" + nextKey);
-                } else {
-                    nextKeytv.setText(currentKey);
-                }
+                Log.d("MAIN ACTIVITY", "Next key changed");
+                AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
+                anim.setDuration(300);
+                anim.setRepeatCount(1);
+                anim.setRepeatMode(Animation.REVERSE);
+
+                anim.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        String currentKey = mMainActivityViewModel.getCurrentKey().getValue().second;
+                        if (mMainActivityViewModel.getIsPlaying().getValue()) {
+                            playButtonTv.setText(currentKey);
+                            nextKeytv.setText(nextKey.second);
+                            Log.d("MAIN ACTIVITY", "Observed next Key change. Current Key: " + currentKey + " Next Key :" + nextKey);
+                        } else {
+                            nextKeytv.setText(currentKey);
+                        }
+                    }
+                });
+
+                playButtonTv.startAnimation(anim);
+                nextKeytv.startAnimation(anim);
+
+            }
+        });
+
+        //Change order of keys view whenever the order changes and the order button
+        mMainActivityViewModel.getOrder().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String order) {
+
+                refreshOrdersList();
+                //Order Button
+                orderButtonTv.setText(order.toUpperCase());
             }
         });
 
@@ -157,7 +216,8 @@ public class MainActivity extends AppCompatActivity {
         mMainActivityViewModel.getStartingKey().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String startingKey) {
-                ((TextView) findViewById(R.id.startingKeyValue)).setText(startingKey);
+                startingKeyButtonTv.setText("Starting from " + startingKey);
+                refreshOrdersList();
             }
         });
 
@@ -169,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Measures per key changes
         mMainActivityViewModel.getMpk().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer mpk) {
@@ -178,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        //On click listeners
+        //On click listeners for fragments
         View tempoButton = findViewById(R.id.tempoButton);
         tempoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,13 +292,40 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    public int getStatusBarHeight() {
+    private int getStatusBarHeight() {
         int result = 0;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
             result = getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    private void refreshOrdersList(){
+        //Order View
+        String keysList = mMainActivityViewModel.getActiveKeysList().getValue().subList(0, 12).toString();
+        keysList = keysList.substring(1, keysList.length()-1);
+        AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
+        anim.setDuration(800);
+        anim.setRepeatCount(1);
+        anim.setRepeatMode(Animation.REVERSE);
+
+        String finalKeysList = keysList;
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                orderTv.setText(finalKeysList);
+            }
+        });
+        orderTv.startAnimation(anim);
     }
 
 }

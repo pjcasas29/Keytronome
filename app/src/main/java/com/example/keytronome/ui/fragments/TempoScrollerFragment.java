@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.keytronome.R;
@@ -48,6 +49,15 @@ public class TempoScrollerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ImageView backArrow = getActivity().findViewById(R.id.backArrowTempo);
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().popBackStack();
+            }
+        });
+
         // Inflate the layout for this fragment
         viewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
 

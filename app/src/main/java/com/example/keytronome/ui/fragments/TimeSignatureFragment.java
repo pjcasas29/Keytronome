@@ -76,6 +76,13 @@ public class TimeSignatureFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ImageView backArrow = getActivity().findViewById(R.id.backArrowTs);
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().popBackStack();
+            }
+        });
 
         twofour = getActivity().findViewById(R.id.twoFourButton);
         twofour.setOnClickListener(view1 -> timeSigSelected((ImageView) view1));

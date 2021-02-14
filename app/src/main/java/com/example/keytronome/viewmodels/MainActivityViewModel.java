@@ -58,7 +58,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public void setIsPlaying(boolean playing) {
-        if(playing){
+        if (playing) {
             Log.d("VIEWMODEL", "SET IS PLAYING TRUE");
 
             ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -158,4 +158,5 @@ public class MainActivityViewModel extends AndroidViewModel {
     public void setOrder(String newOrder) {
         mRepo.setOrder(newOrder);
     }
+
 }

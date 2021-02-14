@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.keytronome.R;
@@ -50,6 +51,14 @@ public class MpkFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         viewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
+
+        ImageView backArrow = getActivity().findViewById(R.id.backArrowMpk);
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().popBackStack();
+            }
+        });
 
         //Set the scrollablle items
         RecyclerView recyclerView = getActivity().findViewById(R.id.rvmpk);

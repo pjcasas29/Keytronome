@@ -120,7 +120,7 @@ public class KeytronomeModel {
 
         //This loop multiplies the list by the number of cycles
         for(int c = 0; c < this.cycles.getValue(); c++) {
-
+        //TODO: BUG WITH STARTING KEY INDEXES. THEY DON'T PRODUCE THE CORRECT STARTING KEY
             switch(this.keyOrder.getValue()){
                 case CHROMATIC:
                     for (int i = 0; i < keys.size(); i++) {
@@ -134,11 +134,24 @@ public class KeytronomeModel {
                     break;
                 case FOURTHS:
                     for(int i = 0; i<keys.size(); i++){
+                        result.add(keys.get(((startingIndex + i) * 5) % keys.size()));
+                    }
+                    break;
+                case THIRDS:
+                    for(int i = 0; i<keys.size(); i++){
                         result.add(keys.get(((startingIndex + i) * 4) % keys.size()));
                     }
-                case THIRDS:
+                    break;
                 case FIFTHS:
+                    for(int i = 0; i<keys.size(); i++){
+                        result.add(keys.get(((startingIndex + i) * 7) % keys.size()));
+                    }
+                    break;
                 case WHOLE_STEPS:
+                    for(int i = 0; i<keys.size(); i++){
+                        result.add(keys.get(((startingIndex + i) * 2) % keys.size()));
+                    }
+                    break;
                 default:
                     result.add("No Keys");
 
@@ -158,6 +171,7 @@ public class KeytronomeModel {
 
     public void setCycles(Integer newCycles) {
         this.cycles.setValue(newCycles);
+        this.setActiveKeysList();
     }
 
     public MutableLiveData<Integer> getCycles() {
@@ -229,5 +243,6 @@ public class KeytronomeModel {
 
     public void setOrder(String newOrder) {
         keyOrder.setValue(newOrder);
+        setActiveKeysList();
     }
 }
