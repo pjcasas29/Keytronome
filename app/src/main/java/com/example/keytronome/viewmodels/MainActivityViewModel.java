@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.keytronome.repositories.KeytronomeRepository;
+import com.example.keytronome.tasks.CueTask;
 import com.example.keytronome.tasks.MetronomeTask;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -25,6 +27,7 @@ import java.util.concurrent.Executors;
 public class MainActivityViewModel extends AndroidViewModel {
 
     private KeytronomeRepository mRepo;
+    ExecutorService executor;
     private final HashMap<String, Integer> beatsPerMeasureMap = new HashMap<String, Integer>() {{
         put("4/4", 4);
         put("3/4", 3);
@@ -57,12 +60,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public void setIsPlaying(boolean playing) {
-        if (playing) {
-            Log.d("VIEWMODEL", "SET IS PLAYING TRUE");
-
-            ExecutorService executor = Executors.newSingleThreadExecutor();
-            executor.execute(new MetronomeTask(this, this.getApplication()));
-        }
+        Log.d("VM", "SET IS PLAYING TO " + playing);
         mRepo.setIsPlaying(playing);
     }
 
@@ -160,5 +158,43 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public LiveData<List<String>> getPreviewList() {
         return mRepo.getPreviewList();
+    }
+
+    public void play() {
+
+        if (mRepo.getIsPlaying().getValue()){
+            executor.shutdownNow();
+            mRepo.setIsPlaying(false);
+
+        } else if (mRepo.getIsCueing().getValue()) {
+            executor.shutdownNow();
+            mRepo.setIsCueing(false);
+        } else {
+            mRepo.setIsCueing(true);
+            executor = Executors.newSingleThreadExecutor();
+
+            //Cue metronome here
+            executor.submit(new CueTask(this, this.getApplication()));
+        }
+    }
+
+    public LiveData<Boolean> getIsCueing() {
+        return mRepo.getIsCueing();
+    }
+
+    public void setIsCueing(boolean cueing){
+        mRepo.setIsCueing(cueing);
+    }
+
+    public void doneCueing() {
+
+        this.setIsCueing(false);
+
+        Log.d("VIEWMODEL", "SETTING PLAYING TO TRUE");
+        this.setIsPlaying(true);
+
+        //Start playing metronome
+        executor.submit(new MetronomeTask(this, this.getApplication()));
+        executor.shutdown();
     }
 }

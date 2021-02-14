@@ -31,4 +31,5 @@
     <string name="three_four_time_signature">three four time signature</string>
     <string name="six_eight_time_signature">six eight time signature</string>
     <string name="order_button_prefix">Starting from \  </string>
+    <string name="ready">Ready...</string>
 </resources>

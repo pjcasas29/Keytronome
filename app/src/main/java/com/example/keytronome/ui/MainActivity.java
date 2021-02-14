@@ -46,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView orderTv;
     private TextView startingKeyButtonTv;
     private TextView orderButtonTv;
+    private TextView readyTv;
+    private View nextKeyGroup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         orderTv = findViewById(R.id.keysOrderTv);
         startingKeyButtonTv = findViewById(R.id.startingKeyButtonTv);
         orderButtonTv = findViewById(R.id.orderButtonTv);
+        readyTv = findViewById(R.id.ready);
+        nextKeyGroup = findViewById(R.id.nextKeyGroup);
 
         //Set top padding for status bar
         findViewById(R.id.main_activity).setPadding(0, getStatusBarHeight(), 0, 0);
@@ -86,46 +91,48 @@ public class MainActivity extends AppCompatActivity {
         mMainActivityViewModel.init();
 
 
-        //Detect tempo changes
-        mMainActivityViewModel.getTempo().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer tempo) {
-                tempoView = (TextView) findViewById(R.id.tempoView);
-                tempoView.setText(String.format("%s%s", tempo.toString(), getString(R.string.bpm)));
-            }
-        });
-
-
-        //Changes in progress
-        mMainActivityViewModel.getProgress().observe(this, progress -> {
-            Log.d("MAIN ACTIVITY", "PROGRESS: " + progress);
-            progressBar.setProgressWithAnimation(progress, (long) 500);
-        });
-
         //Main Play button
-        playButton.setOnClickListener(new View.OnClickListener() {
+        playButton.setOnClickListener(view -> mMainActivityViewModel.play());
+
+        //Main activity is cueing
+        mMainActivityViewModel.getIsCueing().observe(this, new Observer<Boolean>() {
             @Override
-            public void onClick(View view) {
-                mMainActivityViewModel.setIsPlaying(!mMainActivityViewModel.getIsPlaying().getValue());
+            public void onChanged(Boolean isCueing) {
+                if(isCueing){
+                    //Hide
+                    titleTv.animate().alpha(0.0f).setDuration(1000);
+                    playButtonIv.animate().alpha(0.0f).setDuration(1000);
+                    //Show
+                    readyTv.animate().alpha(1.0f).setDuration(1000);
+                    nextKeyGroup.animate().alpha(1.0f).setDuration(1000);
+                    nextKeytv.setText((CharSequence) mMainActivityViewModel.getCurrentKey().getValue().second);
+
+
+                }else{
+                   //Hide views
+                    readyTv.animate().alpha(0.0f).setDuration(1000);
+                }
             }
         });
 
-        //Bind to isPlaying
+        //Main activity is playing
         mMainActivityViewModel.getIsPlaying().observe(this, isPlaying -> {
             if (isPlaying) {
                 //Hide views
-                playButtonIv.animate().alpha(0.0f).setDuration(1000);
-                titleTv.animate().alpha(0.0f).setDuration(1000);
                 orderTv.animate().alpha(0.0f).setDuration(1000);
                 //Show views
                 progressBar.animate().alpha(1.0f).setDuration(1000);
                 playButtonTv.animate().alpha(1.0f).setDuration(1000);
-                nextKeytv.animate().alpha(1.0f).setDuration(1000);
+
+                //Change Views
+                nextKeytv.setText((CharSequence) mMainActivityViewModel.getNextKey().getValue().second);
+                playButtonTv.setText((CharSequence) mMainActivityViewModel.getCurrentKey().getValue().second);
+
 
             } else {
                 //Hide views
                 progressBar.animate().alpha(0.0f).setDuration(1000);
-                nextKeytv.animate().alpha(0.0f).setDuration(1000);
+                nextKeyGroup.animate().alpha(0.0f).setDuration(1000);
                 playButtonTv.animate().alpha(0.0f).setDuration(1000);
                 //Show views
                 playButtonIv.animate().alpha(1.0f).setDuration(1000);
@@ -134,22 +141,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Changes in progress update
+        mMainActivityViewModel.getProgress().observe(this, progress -> {
+            Log.d("MAIN ACTIVITY", "PROGRESS: " + progress);
+            progressBar.setProgressWithAnimation(progress, (long) 500);
+        });
 
-        //Set next key observer
-        mMainActivityViewModel.getNextKey().observe(this, nextKey -> {
-            Log.d("MAIN ACTIVITY", "Next key changed");
+        //Set an observer whenever a key changes. We will use current key
+        mMainActivityViewModel.getCurrentKey().observe(this, currentKey ->{
             AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
             anim.setDuration(300);
             anim.setRepeatCount(1);
             anim.setRepeatMode(Animation.REVERSE);
-
             anim.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
+
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
+
                 }
 
                 @Override
@@ -157,16 +169,13 @@ public class MainActivity extends AppCompatActivity {
                     String currentKey = mMainActivityViewModel.getCurrentKey().getValue().second;
                     if (mMainActivityViewModel.getIsPlaying().getValue()) {
                         playButtonTv.setText(currentKey);
-                        nextKeytv.setText(nextKey.second);
-                        Log.d("MAIN ACTIVITY", "Observed next Key change. Current Key: " + currentKey + " Next Key :" + nextKey);
-                    } else {
-                        nextKeytv.setText(currentKey);
+                        nextKeytv.setText(mMainActivityViewModel.getNextKey().getValue().second);
                     }
                 }
             });
-
             playButtonTv.startAnimation(anim);
             nextKeytv.startAnimation(anim);
+            Log.d("MAIN ACTIVITY", "Current key changed to " + mMainActivityViewModel.getCurrentKey().getValue() + "and " + mMainActivityViewModel.getNextKey().getValue());
 
         });
 
@@ -181,10 +190,21 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+
+
         initGridMenu();
     }
 
     private void initGridMenu() {
+
+        //Detect tempo changes
+        mMainActivityViewModel.getTempo().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer tempo) {
+                tempoView = (TextView) findViewById(R.id.tempoView);
+                tempoView.setText(String.format("%s%s", tempo.toString(), getString(R.string.bpm)));
+            }
+        });
 
         //Time signature changes
         ImageView timeSigImage = findViewById(R.id.timeSignatureImage);

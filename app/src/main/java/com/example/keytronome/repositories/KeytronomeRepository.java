@@ -1,5 +1,6 @@
 package com.example.keytronome.repositories;
 
+import android.util.Log;
 import android.util.Pair;
 
 import androidx.lifecycle.LiveData;
@@ -79,6 +80,7 @@ public class KeytronomeRepository {
     }
 
     public void setIsPlaying(boolean isPlaying) {
+        Log.d("REPO", "SET IS PLAYING TO " + isPlaying);
         model.setIsPlaying(isPlaying);
     }
 
@@ -128,5 +130,14 @@ public class KeytronomeRepository {
 
     public LiveData<List<String>> getPreviewList() {
         return model.getPreviewList();
+    }
+
+    public LiveData<Boolean> getIsCueing() {
+        return model.isCueing();
+    }
+
+    public void setIsCueing(boolean cueing) {
+
+        model.setIsCueing(cueing);
     }
 }

@@ -48,9 +48,10 @@ public class KeytronomeModel {
     public MutableLiveData<ArrayList<String>> currentKeysList = new MutableLiveData<>();
     public MutableLiveData<Integer> cycles = new MutableLiveData<>();
     public MutableLiveData<Boolean> isPlaying = new MutableLiveData<>();
-    public MutableLiveData<Float> progress= new MutableLiveData<>();
+    public MutableLiveData<Float> progress = new MutableLiveData<>();
     public MutableLiveData<Integer> mpk = new MutableLiveData<>();
     public MutableLiveData<List<String>> previewList = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isCueing = new MutableLiveData<>();
 
     //Initialize default values
     public KeytronomeModel() {
@@ -60,11 +61,11 @@ public class KeytronomeModel {
         startingKey.setValue(DEFAULT_STARTING_KEY);
         cycles.setValue(DEFAULT_CYCLES);
         isPlaying.setValue(false);
+        isCueing.setValue(false);
         mpk.setValue(DEFAULT_MPK);
         ascending.setValue(true);
         this.setActiveKeysList();
         this.setPreviewList();
-
     }
 
     public void setTempo(int bpm) {
@@ -95,7 +96,7 @@ public class KeytronomeModel {
         this.timeSig.setValue(timeSig);
     }
 
-    public MutableLiveData<String> getStartingKey(){
+    public MutableLiveData<String> getStartingKey() {
         return this.startingKey;
     }
 
@@ -105,7 +106,7 @@ public class KeytronomeModel {
         this.setPreviewList();
     }
 
-    public LiveData<ArrayList<String>> getActiveKeysList(){
+    public LiveData<ArrayList<String>> getActiveKeysList() {
         return this.currentKeysList;
     }
 
@@ -113,15 +114,15 @@ public class KeytronomeModel {
     /**
      * Creates a list of keys to iterate over according to the keytronome parameters
      */
-    public void setActiveKeysList(){
+    public void setActiveKeysList() {
         ArrayList<String> result = new ArrayList<>();
         int startingIndex = keys.indexOf(startingKey.getValue());
 
         Log.d("DEBUG MODEL", "Key order:" + this.keyOrder.getValue() + " Starting Key:" + startingKey.getValue() + " StartingIndex: " + startingIndex);
 
         //This loop multiplies the list by the number of cycles
-        for(int c = 0; c < this.cycles.getValue(); c++) {
-            switch(this.keyOrder.getValue()){
+        for (int c = 0; c < this.cycles.getValue(); c++) {
+            switch (this.keyOrder.getValue()) {
                 case CHROMATIC:
                     for (int i = 0; i < keys.size(); i++) {
                         result.add(keys.get((startingIndex + i) % keys.size()));
@@ -133,22 +134,22 @@ public class KeytronomeModel {
                     }
                     break;
                 case FOURTHS:
-                    for(int i = 0; i<keys.size(); i++){
+                    for (int i = 0; i < keys.size(); i++) {
                         result.add(keys.get(((startingIndex + (i * 5)) % keys.size())));
                     }
                     break;
                 case THIRDS:
-                    for(int i = 0; i<keys.size(); i++){
+                    for (int i = 0; i < keys.size(); i++) {
                         result.add(keys.get(((startingIndex + (i * 4)) % keys.size())));
                     }
                     break;
                 case FIFTHS:
-                    for(int i = 0; i<keys.size(); i++){
+                    for (int i = 0; i < keys.size(); i++) {
                         result.add(keys.get(((startingIndex + (i * 7)) % keys.size())));
                     }
                     break;
                 case WHOLE_STEPS:
-                    for(int i = 0; i<keys.size(); i++){
+                    for (int i = 0; i < keys.size(); i++) {
                         result.add(keys.get(((startingIndex + (i * 2)) % keys.size())));
                     }
                     break;
@@ -165,7 +166,7 @@ public class KeytronomeModel {
         return this.nextKey;
     }
 
-    public LiveData<Pair<Integer, String>> getCurrentKey(){
+    public LiveData<Pair<Integer, String>> getCurrentKey() {
         return this.currentKey;
     }
 
@@ -182,34 +183,37 @@ public class KeytronomeModel {
         return MAX_CYCLES;
     }
 
-    public ArrayList<String> getKeys(){
+    public ArrayList<String> getKeys() {
         return keys;
     }
 
-    private void resetKeyPositions(){
+    private void resetKeyPositions() {
         this.currentKey.postValue(new Pair<>(0, this.currentKeysList.getValue().get(0)));
         this.nextKey.postValue(new Pair<>(1, this.currentKeysList.getValue().get(1)));
     }
 
     public void setIsPlaying(boolean changeIsPlaying) {
-        if(!changeIsPlaying){
+        Log.d("MODEL", "SET IS PLAYING TO " + changeIsPlaying);
+
+        if (!changeIsPlaying) { // Reset key positions and progress when app has stopped playing
             resetKeyPositions();
             setProgress(0);
-        }else//Set to true TODO: WHATEVER NEEDS TO GO HERE
-        {
-
         }
+
         this.isPlaying.postValue(changeIsPlaying);
     }
 
-    public LiveData<Boolean> isPlaying(){
+    public LiveData<Boolean> isPlaying() {
         return this.isPlaying;
     }
 
     public void goToNextKey() {
-        this.nextKey.postValue(this.currentKey.getValue());
-        int nextIndex = (Objects.requireNonNull(getCurrentKey().getValue()).first + 1) % this.getActiveKeysList().getValue().size();
-        this.currentKey.postValue(new Pair<Integer, String>(nextIndex, this.currentKeysList.getValue().get(nextIndex)));
+        Log.d("MODEL", "GO TO NEXT KEY");
+
+        int nextCurrentIndex = (Objects.requireNonNull(getCurrentKey().getValue()).first + 1) % this.getActiveKeysList().getValue().size();
+        this.currentKey.postValue(new Pair<Integer, String>(nextCurrentIndex, this.currentKeysList.getValue().get(nextCurrentIndex)));
+        int nextNextIndex = (Objects.requireNonNull(getNextKey().getValue()).first + 1) % this.getActiveKeysList().getValue().size();
+        this.nextKey.postValue(new Pair<Integer, String>(nextNextIndex, this.currentKeysList.getValue().get(nextNextIndex)));
     }
 
 
@@ -247,11 +251,19 @@ public class KeytronomeModel {
         setPreviewList();
     }
 
-    private void setPreviewList(){
+    private void setPreviewList() {
         previewList.setValue(Objects.requireNonNull(getActiveKeysList().getValue()).subList(0, 12));
     }
 
-    public LiveData<List<String>> getPreviewList(){
+    public LiveData<List<String>> getPreviewList() {
         return previewList;
+    }
+
+    public LiveData<Boolean> isCueing() {
+        return this.isCueing;
+    }
+
+    public void setIsCueing(boolean cueing) {
+        this.isCueing.postValue(cueing);
     }
 }
