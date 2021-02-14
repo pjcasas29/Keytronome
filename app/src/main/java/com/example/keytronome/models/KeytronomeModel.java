@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -48,6 +49,7 @@ public class KeytronomeModel {
     public MutableLiveData<Boolean> isPlaying = new MutableLiveData<>();
     public MutableLiveData<Float> progress= new MutableLiveData<>();
     public MutableLiveData<Integer> mpk = new MutableLiveData<>();
+    public MutableLiveData<List<String>> previewList = new MutableLiveData<>();
 
     //Initialize default values
     public KeytronomeModel() {
@@ -60,6 +62,8 @@ public class KeytronomeModel {
         mpk.setValue(DEFAULT_MPK);
         ascending.setValue(true);
         this.setActiveKeysList();
+        this.setPreviewList();
+
     }
 
     public void setTempo(int bpm) {
@@ -102,6 +106,7 @@ public class KeytronomeModel {
     public void setStartingKey(String startingKey) {
         this.startingKey.setValue(startingKey);
         this.setActiveKeysList();
+        this.setPreviewList();
     }
 
     public LiveData<ArrayList<String>> getActiveKeysList(){
@@ -244,5 +249,14 @@ public class KeytronomeModel {
     public void setOrder(String newOrder) {
         keyOrder.setValue(newOrder);
         setActiveKeysList();
+        setPreviewList();
+    }
+
+    private void setPreviewList(){
+        previewList.setValue(getActiveKeysList().getValue().subList(0, 12));
+    }
+
+    public LiveData<List<String>> getPreviewList(){
+        return previewList;
     }
 }

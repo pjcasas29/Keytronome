@@ -14,10 +14,9 @@ import com.example.keytronome.tasks.MetronomeTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import javax.net.ssl.SSLSession;
 
 
 /**
@@ -159,4 +158,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         mRepo.setOrder(newOrder);
     }
 
+    public LiveData<List<String>> getPreviewList() {
+        return mRepo.getPreviewList();
+    }
 }

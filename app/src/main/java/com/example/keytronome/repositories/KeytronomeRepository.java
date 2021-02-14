@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.keytronome.models.KeytronomeModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class KeytronomeRepository {
 
@@ -123,5 +124,9 @@ public class KeytronomeRepository {
 
     public void setOrder(String newOrder) {
         model.setOrder(newOrder);
+    }
+
+    public LiveData<List<String>> getPreviewList() {
+        return model.getPreviewList();
     }
 }
