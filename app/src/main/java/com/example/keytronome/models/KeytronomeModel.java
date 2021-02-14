@@ -139,22 +139,22 @@ public class KeytronomeModel {
                     break;
                 case FOURTHS:
                     for(int i = 0; i<keys.size(); i++){
-                        result.add(keys.get(((startingIndex + i) * 5) % keys.size()));
+                        result.add(keys.get(((startingIndex + (i * 5)) % keys.size())));
                     }
                     break;
                 case THIRDS:
                     for(int i = 0; i<keys.size(); i++){
-                        result.add(keys.get(((startingIndex + i) * 4) % keys.size()));
+                        result.add(keys.get(((startingIndex + (i * 4)) % keys.size())));
                     }
                     break;
                 case FIFTHS:
                     for(int i = 0; i<keys.size(); i++){
-                        result.add(keys.get(((startingIndex + i) * 7) % keys.size()));
+                        result.add(keys.get(((startingIndex + (i * 7)) % keys.size())));
                     }
                     break;
                 case WHOLE_STEPS:
                     for(int i = 0; i<keys.size(); i++){
-                        result.add(keys.get(((startingIndex + i) * 2) % keys.size()));
+                        result.add(keys.get(((startingIndex + (i * 2)) % keys.size())));
                     }
                     break;
                 default:
