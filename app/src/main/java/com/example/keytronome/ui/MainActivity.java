@@ -29,6 +29,7 @@ import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,12 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
     CircularProgressBar progressBar;
     TextView playButtonTv;
-    private TextView tempoButtonValue;
 
     FragmentManager fm;
     private TextView tempoView;
     private TextView nextKeytv;
-    private View playButton;
     private ImageView playButtonIv;
     private TextView titleTv;
     private TextView orderTv;
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set views here
         progressBar = findViewById(R.id.circularProgressBar);
-        playButton = findViewById(R.id.playButton);
+        View playButton = findViewById(R.id.playButton);
         nextKeytv = findViewById(R.id.nextKeyView);
         playButtonTv = findViewById(R.id.playButtonTv);
         playButtonIv = findViewById(R.id.playButtonIv);
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Hide Action Bar
         try {
-            this.getSupportActionBar().hide();
+            Objects.requireNonNull(this.getSupportActionBar()).hide();
         } catch (NullPointerException e) {
             Log.w("MAIN ACTIVITY", "COULD NOT HIDE ACTION BAR");
         }
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(Integer tempo) {
                 tempoView = (TextView) findViewById(R.id.tempoView);
-                tempoView.setText(tempo.toString() + getString(R.string.bpm));
+                tempoView.setText(String.format("%s%s", tempo.toString(), getString(R.string.bpm)));
             }
         });
 
@@ -114,18 +113,22 @@ public class MainActivity extends AppCompatActivity {
         //Bind to isPlaying
         mMainActivityViewModel.getIsPlaying().observe(this, isPlaying -> {
             if (isPlaying) {
-                progressBar.animate().alpha(1.0f).setDuration(1000);
+                //Hide views
                 playButtonIv.animate().alpha(0.0f).setDuration(1000);
-                playButtonTv.animate().alpha(1.0f).setDuration(1000);
-                nextKeytv.animate().alpha(1.0f).setDuration(1000);
                 titleTv.animate().alpha(0.0f).setDuration(1000);
                 orderTv.animate().alpha(0.0f).setDuration(1000);
+                //Show views
+                progressBar.animate().alpha(1.0f).setDuration(1000);
+                playButtonTv.animate().alpha(1.0f).setDuration(1000);
+                nextKeytv.animate().alpha(1.0f).setDuration(1000);
 
             } else {
+                //Hide views
                 progressBar.animate().alpha(0.0f).setDuration(1000);
-                playButtonIv.animate().alpha(1.0f).setDuration(1000);
-                playButtonTv.animate().alpha(0.0f).setDuration(1000);
                 nextKeytv.animate().alpha(0.0f).setDuration(1000);
+                playButtonTv.animate().alpha(0.0f).setDuration(1000);
+                //Show views
+                playButtonIv.animate().alpha(1.0f).setDuration(1000);
                 titleTv.animate().alpha(1.0f).setDuration(1000);
                 orderTv.animate().alpha(1.0f).setDuration(1000);
             }

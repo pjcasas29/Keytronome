@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,8 +30,6 @@ import travel.ithaka.android.horizontalpickerlib.PickerLayoutManager;
  */
 public class TempoScrollerFragment extends Fragment {
 
-    private RecyclerView rvHorizontalPicker;
-    private TextView tvSelectedItem;
     PickerAdapter adapter;
     MainActivityViewModel viewModel;
 
@@ -50,13 +49,8 @@ public class TempoScrollerFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageView backArrow = getActivity().findViewById(R.id.backArrowTempo);
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getFragmentManager().popBackStack();
-            }
-        });
+        Button backArrow = getActivity().findViewById(R.id.backArrowTempo);
+        backArrow.setOnClickListener(view1 -> getFragmentManager().popBackStack());
 
         // Inflate the layout for this fragment
         viewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);

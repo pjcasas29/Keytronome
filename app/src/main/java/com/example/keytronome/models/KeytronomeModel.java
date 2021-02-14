@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -94,11 +95,6 @@ public class KeytronomeModel {
         this.timeSig.setValue(timeSig);
     }
 
-    public void setKeyOrder(String order) {
-        this.keyOrder.setValue(order);
-        this.setActiveKeysList();
-    }
-
     public MutableLiveData<String> getStartingKey(){
         return this.startingKey;
     }
@@ -125,7 +121,6 @@ public class KeytronomeModel {
 
         //This loop multiplies the list by the number of cycles
         for(int c = 0; c < this.cycles.getValue(); c++) {
-        //TODO: BUG WITH STARTING KEY INDEXES. THEY DON'T PRODUCE THE CORRECT STARTING KEY
             switch(this.keyOrder.getValue()){
                 case CHROMATIC:
                     for (int i = 0; i < keys.size(); i++) {
@@ -184,7 +179,7 @@ public class KeytronomeModel {
     }
 
     public int getMaxCycles() {
-        return this.MAX_CYCLES;
+        return MAX_CYCLES;
     }
 
     public ArrayList<String> getKeys(){
@@ -213,7 +208,7 @@ public class KeytronomeModel {
 
     public void goToNextKey() {
         this.nextKey.postValue(this.currentKey.getValue());
-        int nextIndex = (getCurrentKey().getValue().first + 1) % this.getActiveKeysList().getValue().size();
+        int nextIndex = (Objects.requireNonNull(getCurrentKey().getValue()).first + 1) % this.getActiveKeysList().getValue().size();
         this.currentKey.postValue(new Pair<Integer, String>(nextIndex, this.currentKeysList.getValue().get(nextIndex)));
     }
 
@@ -253,7 +248,7 @@ public class KeytronomeModel {
     }
 
     private void setPreviewList(){
-        previewList.setValue(getActiveKeysList().getValue().subList(0, 12));
+        previewList.setValue(Objects.requireNonNull(getActiveKeysList().getValue()).subList(0, 12));
     }
 
     public LiveData<List<String>> getPreviewList(){

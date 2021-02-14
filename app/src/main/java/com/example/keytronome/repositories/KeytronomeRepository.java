@@ -13,7 +13,7 @@ import java.util.List;
 public class KeytronomeRepository {
 
     private static KeytronomeRepository instance;
-    private KeytronomeModel model = new KeytronomeModel();
+    private final KeytronomeModel model = new KeytronomeModel();
 
     public static KeytronomeRepository getInstance(){
         if(instance == null){

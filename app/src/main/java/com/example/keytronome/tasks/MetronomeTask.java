@@ -54,6 +54,7 @@ public class MetronomeTask implements Runnable {
         int loadTickId = mSoundPool.load(context, tickId, 1);
         int loadPingId = mSoundPool.load(context, pingId, 1);
 
+        //TODO: Remove this pause after CueTask is implemented
         try {
             Thread.sleep((long) (100));
         } catch (InterruptedException e) {
