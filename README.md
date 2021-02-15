@@ -1,10 +1,46 @@
-# Keytronome
-Metronome application to aid in playing in different keys
+<h1 align="center">
 
-![demo startup gif](https://github.com/pjcasas29/Keytronome/blob/master/DemoStart.gif)
+  <img  width="500"
+        alt="Keytronome"
+        src="https://github.com/pjcasas29/Keytronome/blob/master/Logo.png"/>
+
+</h1>
+
+Metronome application to aid in playing in different keys
 
 # Motivation
 
-# Installation and Usage
+This application is for any musician who would like a customizable metronome that displays all 12 keys in different orders. 
 
-# Development Setup
+The user can select:
+
+- Tempo
+- Time signature
+- Number of cycles (times the metronome will go around the same set of keys)
+- Order of keys currently supporting:
+    - Chromatic
+    - Fifths
+    - Fourths
+    - Thirds
+    - Whole steps
+    - Random order
+- Starting key
+- Measures per Key (Number of measures until the next key chaange occurs)
+
+# Screenshots
+
+<p style="text-align: center;">![demo startup gif](https://github.com/pjcasas29/Keytronome/blob/master/DemoStart.gif)</p>
+
+## Maintainers
+This project is mantained by:
+* [Pedro Casas](http://github.com/pjcasas29)
+
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (git checkout -b my-new-feature)
+3. Commit your changes (git commit -m 'Add some feature')
+4. Run the linter (ruby lint.rb').
+5. Push your branch (git push origin my-new-feature)
+6. Create a new Pull Request
