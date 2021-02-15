@@ -29,14 +29,21 @@ The user can select:
 
 # Screenshots
 
-Starting app and playing with default values
-<img alt="demo startup gif" src="https://github.com/pjcasas29/Keytronome/blob/master/DemoStart.gif" height="500"/>
+<h4 align="center">Starting app and playing with default values
+</h4>
 
-Selecting Tempo
+<img align="center" alt="demo startup gif" src="https://github.com/pjcasas29/Keytronome/blob/master/DemoStart.gif" height="500"/>
+
+<h4 align="center">Selecting Tempo</h4>
+<div style="text-align:center">
 <img alt="demo startup gif" src="https://github.com/pjcasas29/Keytronome/blob/master/DemoTempo.gif" height="500"/>
+</div>
 
-Chnaging order of keys
+<h4 align="center">Changing order of keys</h4>
+
+<div style="text-align:center">
 <img alt="demo startup gif" src="https://github.com/pjcasas29/Keytronome/blob/master/DemoOrder.gif" height="500"/>
+</div>
 
 ## Maintainers
 This project is mantained by:
