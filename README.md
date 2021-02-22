@@ -6,7 +6,7 @@
 
 </h1>
 
-Metronome application to aid in playing in different keys
+Metronome application to aid in playing in different keys created using the MVVVM design pattern and LiveData
 
 # Motivation
 
