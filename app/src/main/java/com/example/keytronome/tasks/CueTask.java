@@ -4,10 +4,15 @@ import android.content.Context;
 import android.media.SoundPool;
 import android.util.Log;
 
+import androidx.lifecycle.Lifecycle;
+
 import com.example.keytronome.R;
 import com.example.keytronome.viewmodels.MainActivityViewModel;
 
-public class CueTask implements Runnable {
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+
+public class CueTask implements Runnable  {
 
     private static int DEFAULT_TICK_ID = R.raw.claptick;
 

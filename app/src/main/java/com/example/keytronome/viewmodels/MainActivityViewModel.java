@@ -20,6 +20,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Predicate;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+import static android.content.ContentValues.TAG;
+
 
 /**
  * The view model keeps track of the live state of the application
@@ -162,7 +171,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public void play() {
 
-        if (mRepo.getIsPlaying().getValue()){
+        if (mRepo.getIsPlaying().getValue()) {
             executor.shutdownNow();
             mRepo.setIsPlaying(false);
 
@@ -175,7 +184,38 @@ public class MainActivityViewModel extends AndroidViewModel {
 
             //Cue metronome here
             executor.submit(new CueTask(this, this.getApplication()));
+
         }
+
+        // emit an observable every time interval
+//        Observable<Long> intervalObservable = Observable
+//                .interval(1, TimeUnit.SECONDS)
+//                .subscribeOn(Schedulers.io())
+//                .takeWhile(new Predicate<Long>() { // stop the process if more than 5 seconds passes
+//                    @Override
+//                    public boolean test(Long aLong) throws Exception {
+//                        return aLong <= 5;
+//                    }
+//                })
+//                .observeOn(AndroidSchedulers.mainThread());
+//
+//        intervalObservable.subscribe(new Observer<Long>() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//            }
+//            @Override
+//            public void onNext(Long aLong) {
+//                Log.d(TAG, "onNext: interval: " + aLong);
+//            }
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//            @Override
+//            public void onComplete() {
+//
+//            }
+//        });
     }
 
     public LiveData<Boolean> getIsCueing() {

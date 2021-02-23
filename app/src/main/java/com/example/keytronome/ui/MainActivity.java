@@ -94,108 +94,11 @@ public class MainActivity extends AppCompatActivity {
         //Main Play button
         playButton.setOnClickListener(view -> mMainActivityViewModel.play());
 
-        //Main activity is cueing
-        mMainActivityViewModel.getIsCueing().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean isCueing) {
-                if(isCueing){
-                    //Hide
-                    titleTv.animate().alpha(0.0f).setDuration(1000);
-                    playButtonIv.animate().alpha(0.0f).setDuration(1000);
-                    //Show
-                    readyTv.animate().alpha(1.0f).setDuration(1000);
-                    nextKeyGroup.animate().alpha(1.0f).setDuration(1000);
-                    nextKeytv.setText((CharSequence) mMainActivityViewModel.getCurrentKey().getValue().second);
-
-
-                }else{
-                   //Hide views
-                    readyTv.animate().alpha(0.0f).setDuration(1000);
-                }
-            }
-        });
-
-        //Main activity is playing
-        mMainActivityViewModel.getIsPlaying().observe(this, isPlaying -> {
-            if (isPlaying) {
-                //Hide views
-                orderTv.animate().alpha(0.0f).setDuration(1000);
-                //Show views
-                progressBar.animate().alpha(1.0f).setDuration(1000);
-                playButtonTv.animate().alpha(1.0f).setDuration(1000);
-
-                //Change Views
-                nextKeytv.setText((CharSequence) mMainActivityViewModel.getNextKey().getValue().second);
-                playButtonTv.setText((CharSequence) mMainActivityViewModel.getCurrentKey().getValue().second);
-
-
-            } else {
-                //Hide views
-                progressBar.animate().alpha(0.0f).setDuration(1000);
-                nextKeyGroup.animate().alpha(0.0f).setDuration(1000);
-                playButtonTv.animate().alpha(0.0f).setDuration(1000);
-                //Show views
-                playButtonIv.animate().alpha(1.0f).setDuration(1000);
-                titleTv.animate().alpha(1.0f).setDuration(1000);
-                orderTv.animate().alpha(1.0f).setDuration(1000);
-            }
-        });
-
-        //Changes in progress update
-        mMainActivityViewModel.getProgress().observe(this, progress -> {
-            Log.d("MAIN ACTIVITY", "PROGRESS: " + progress);
-            progressBar.setProgressWithAnimation(progress, (long) 500);
-        });
-
-        //Set an observer whenever a key changes. We will use current key
-        mMainActivityViewModel.getCurrentKey().observe(this, currentKey ->{
-            AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
-            anim.setDuration(300);
-            anim.setRepeatCount(1);
-            anim.setRepeatMode(Animation.REVERSE);
-            anim.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                    String currentKey = mMainActivityViewModel.getCurrentKey().getValue().second;
-                    if (mMainActivityViewModel.getIsPlaying().getValue()) {
-                        playButtonTv.setText(currentKey);
-                        nextKeytv.setText(mMainActivityViewModel.getNextKey().getValue().second);
-                    }
-                }
-            });
-            playButtonTv.startAnimation(anim);
-            nextKeytv.startAnimation(anim);
-            Log.d("MAIN ACTIVITY", "Current key changed to " + mMainActivityViewModel.getCurrentKey().getValue() + "and " + mMainActivityViewModel.getNextKey().getValue());
-
-        });
-
-        //Change the preview whenever the preview list changes
-        mMainActivityViewModel.getPreviewList().observe(this, strings -> refreshPreviewList());
-
-        //Change the order button when the order changes
-        mMainActivityViewModel.getOrder().observe(this, order -> {
-
-            //Order Button
-            orderButtonTv.setText(order.toUpperCase());
-
-        });
-
-
-
+        setObservers();
         initGridMenu();
     }
 
-    private void initGridMenu() {
+    private void setObservers() {
 
         //Detect tempo changes
         mMainActivityViewModel.getTempo().observe(this, new Observer<Integer>() {
@@ -236,6 +139,104 @@ public class MainActivity extends AppCompatActivity {
             mpkTv.setText(String.format("%s %s", getResources().getString(R.string.measure_per_key_prefix), mpk.toString()));
         });
 
+        //Change the preview whenever the preview list changes
+        mMainActivityViewModel.getPreviewList().observe(this, strings -> refreshPreviewList());
+
+        //Change the order button when the order changes
+        mMainActivityViewModel.getOrder().observe(this, order -> {
+
+            //Order Button
+            orderButtonTv.setText(order.toUpperCase());
+
+        });
+
+        //Changes in progress update
+        mMainActivityViewModel.getProgress().observe(this, progress -> {
+            Log.d("MAIN ACTIVITY", "PROGRESS: " + progress);
+            progressBar.setProgressWithAnimation(progress, (long) 500);
+        });
+
+        //Set an observer whenever a key changes. We will use current key
+        mMainActivityViewModel.getCurrentKey().observe(this, currentKey ->{
+            AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
+            anim.setDuration(300);
+            anim.setRepeatCount(1);
+            anim.setRepeatMode(Animation.REVERSE);
+            anim.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                    String currentKey = mMainActivityViewModel.getCurrentKey().getValue().second;
+                    if (mMainActivityViewModel.getIsPlaying().getValue()) {
+                        playButtonTv.setText(currentKey);
+                        nextKeytv.setText(mMainActivityViewModel.getNextKey().getValue().second);
+                    }
+                }
+            });
+            playButtonTv.startAnimation(anim);
+            nextKeytv.startAnimation(anim);
+            Log.d("MAIN ACTIVITY", "Current key changed to " + mMainActivityViewModel.getCurrentKey().getValue() + "and " + mMainActivityViewModel.getNextKey().getValue());
+
+        });
+
+        //Main activity is cueing
+        mMainActivityViewModel.getIsCueing().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isCueing) {
+                if(isCueing){
+                    //Hide
+                    titleTv.animate().alpha(0.0f).setDuration(1000);
+                    playButtonIv.animate().alpha(0.0f).setDuration(1000);
+                    //Show
+                    readyTv.animate().alpha(1.0f).setDuration(1000);
+                    nextKeyGroup.animate().alpha(1.0f).setDuration(1000);
+                    nextKeytv.setText((CharSequence) mMainActivityViewModel.getCurrentKey().getValue().second);
+
+
+                }else{
+                    //Hide views
+                    readyTv.animate().alpha(0.0f).setDuration(1000);
+                }
+            }
+        });
+
+        //Main activity is playing
+        mMainActivityViewModel.getIsPlaying().observe(this, isPlaying -> {
+            if (isPlaying) {
+                //Hide views
+                orderTv.animate().alpha(0.0f).setDuration(1000);
+                //Show views
+                progressBar.animate().alpha(1.0f).setDuration(1000);
+                playButtonTv.animate().alpha(1.0f).setDuration(1000);
+
+                //Change Views
+                nextKeytv.setText((CharSequence) mMainActivityViewModel.getNextKey().getValue().second);
+                playButtonTv.setText((CharSequence) mMainActivityViewModel.getCurrentKey().getValue().second);
+
+
+            } else {
+                //Hide views
+                progressBar.animate().alpha(0.0f).setDuration(1000);
+                nextKeyGroup.animate().alpha(0.0f).setDuration(1000);
+                playButtonTv.animate().alpha(0.0f).setDuration(1000);
+                //Show views
+                playButtonIv.animate().alpha(1.0f).setDuration(1000);
+                titleTv.animate().alpha(1.0f).setDuration(1000);
+                orderTv.animate().alpha(1.0f).setDuration(1000);
+            }
+        });
+    }
+
+    private void initGridMenu() {
 
         //On click listeners for fragments
         View tempoButton = findViewById(R.id.tempoButton);
