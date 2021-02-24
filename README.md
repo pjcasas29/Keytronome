@@ -6,7 +6,8 @@
 
 </h1>
 
-Metronome application to aid in playing in different keys created using the MVVM design pattern and LiveData
+Metronome application to aid in playing in different keys created using the MVVM design pattern. 
+Uses LiveData, RxJava and Room
 
 # Motivation
 
