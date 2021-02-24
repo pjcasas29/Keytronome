@@ -6,6 +6,8 @@ import android.util.Pair;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.keytronome.db.Keytronome;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,6 +40,7 @@ public class KeytronomeModel {
     private static final int DEFAULT_MPK = 2;
 
     //State variables
+    public MutableLiveData<String> name = new MutableLiveData<>();
     public MutableLiveData<Boolean> ascending = new MutableLiveData<>();
     public MutableLiveData<String> startingKey = new MutableLiveData<>();
     public MutableLiveData<String> keyOrder = new MutableLiveData<>();
@@ -68,6 +71,27 @@ public class KeytronomeModel {
         this.setPreviewList();
     }
 
+    public KeytronomeModel(int tempo, String timeSig, String order, String startingKey, int cycles, int mpk, boolean ascending){
+        this.tempo.setValue(tempo);
+        this.timeSig.setValue(timeSig);
+        this.keyOrder.setValue(order);
+        this.startingKey.setValue(startingKey);
+        this.cycles.setValue(cycles);
+        this.isPlaying.setValue(false);
+        this.isCueing.setValue(false);
+        this.mpk.setValue(mpk);
+        this.ascending.setValue(ascending);
+        this.setActiveKeysList();
+        this.setPreviewList();
+    }
+
+    public void setName(String name){
+        this.name.setValue(name);
+    }
+
+    public LiveData<String> getName(){
+        return this.name;
+    }
     public void setTempo(int bpm) {
         if (bpm <= 300 && bpm >= 20) {
             tempo.setValue(bpm);
@@ -265,5 +289,17 @@ public class KeytronomeModel {
 
     public void setIsCueing(boolean cueing) {
         this.isCueing.postValue(cueing);
+    }
+
+    public Keytronome toEntity() {
+        Keytronome result = new Keytronome(this.name.getValue(),
+                this.ascending.getValue(),
+                this.startingKey.getValue(),
+                this.keyOrder.getValue(),
+                this.tempo.getValue(),
+                this.timeSig.getValue(),
+                this.cycles.getValue(),
+                this.mpk.getValue());
+        return result;
     }
 }

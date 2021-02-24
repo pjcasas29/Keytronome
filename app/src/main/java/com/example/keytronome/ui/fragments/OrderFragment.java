@@ -33,15 +33,9 @@ import travel.ithaka.android.horizontalpickerlib.PickerLayoutManager;
 public class OrderFragment extends Fragment {
 
     PickerAdapter adapter;
-    PickerAdapter adapterOrders;
     MainActivityViewModel viewModel;
 
-    private View chromaticButton;
-    private View fourthsButton;
-    private View fifthsButton;
-    private View thirdsButton;
-    private View randomButton;
-    private View wholeStepsButton;
+
     private ArrayList<View> buttons = new ArrayList<>();
 
     public OrderFragment() {

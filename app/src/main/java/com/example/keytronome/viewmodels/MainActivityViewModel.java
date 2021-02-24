@@ -18,16 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Predicate;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-
-import static android.content.ContentValues.TAG;
+import io.reactivex.rxjava3.core.Completable;
 
 
 /**
@@ -52,7 +44,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         if (mRepo != null) {
             return;
         }
-        mRepo = KeytronomeRepository.getInstance();
+        mRepo = KeytronomeRepository.getInstance(getApplication());
     }
 
     public LiveData<Integer> getTempo() {
@@ -236,5 +228,10 @@ public class MainActivityViewModel extends AndroidViewModel {
         //Start playing metronome
         executor.submit(new MetronomeTask(this, this.getApplication()));
         executor.shutdown();
+    }
+
+
+    public Completable savePreset(String name){
+        return mRepo.savePreset(name);
     }
 }

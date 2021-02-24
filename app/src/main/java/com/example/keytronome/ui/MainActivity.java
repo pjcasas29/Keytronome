@@ -22,6 +22,7 @@ import com.example.keytronome.R;
 import com.example.keytronome.ui.fragments.CyclesFragment;
 import com.example.keytronome.ui.fragments.MpkFragment;
 import com.example.keytronome.ui.fragments.OrderFragment;
+import com.example.keytronome.ui.fragments.SaveFragment;
 import com.example.keytronome.ui.fragments.TempoScrollerFragment;
 import com.example.keytronome.ui.fragments.TimeSignatureFragment;
 import com.example.keytronome.viewmodels.MainActivityViewModel;
@@ -254,6 +255,8 @@ public class MainActivity extends AppCompatActivity {
         View mpkButton = findViewById(R.id.mpkButton);
         mpkButton.setOnClickListener(view -> changeFragment(new MpkFragment()));
 
+        View saveButton = findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(view -> changeFragment(new SaveFragment()));
 
     }
 

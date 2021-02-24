@@ -1,27 +1,54 @@
 package com.example.keytronome.repositories;
 
+import android.app.Application;
 import android.util.Log;
 import android.util.Pair;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.keytronome.db.Keytronome;
+import com.example.keytronome.db.KeytronomeDao;
+import com.example.keytronome.db.KeytronomeRoomDatabase;
 import com.example.keytronome.models.KeytronomeModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class KeytronomeRepository {
 
     private static KeytronomeRepository instance;
     private final KeytronomeModel model = new KeytronomeModel();
 
-    public static KeytronomeRepository getInstance(){
+    private KeytronomeDao keytronomeDao;
+    private KeytronomeRoomDatabase keytronomeDB;
+
+    public static KeytronomeRepository getInstance(Application context){
         if(instance == null){
-            instance = new KeytronomeRepository();
+            instance = new KeytronomeRepository(context);
         }
         return instance;
     }
+
+    public KeytronomeRepository(Application context){
+
+         keytronomeDB = KeytronomeRoomDatabase.getDatabase(context);
+         keytronomeDao = keytronomeDB.keytronomeDao();
+    }
+
+    public Completable savePreset(String name){
+        model.setName(name);
+        Keytronome entity = model.toEntity();
+        return Completable.fromCallable(()-> keytronomeDB.keytronomeDao().insert(entity));
+    }
+
 
     public MutableLiveData<Integer> getTempo(){
         return model.getBpm();

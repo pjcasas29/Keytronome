@@ -32,4 +32,11 @@
     <string name="six_eight_time_signature">six eight time signature</string>
     <string name="order_button_prefix">Starting from \  </string>
     <string name="ready">Ready...</string>
+    <string name="save">Save</string>
+    <string name="Load">Load</string>
+    <string name="sign_in_dialog">sign in dialog</string>
+    <string name="save_dialog_title">Save Preset</string>
+    <string name="preset_name">preset name</string>
+    <string name="cancel">cancel</string>
+    <string name="save_hint">Enter preset name</string>
 </resources>
