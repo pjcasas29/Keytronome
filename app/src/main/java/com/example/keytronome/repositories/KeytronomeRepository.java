@@ -26,6 +26,7 @@ public class KeytronomeRepository {
 
     private static KeytronomeRepository instance;
     private final KeytronomeModel model = new KeytronomeModel();
+    private LiveData<List<Keytronome>> mAllPresets;
 
     private KeytronomeDao keytronomeDao;
     private KeytronomeRoomDatabase keytronomeDB;
@@ -38,9 +39,13 @@ public class KeytronomeRepository {
     }
 
     public KeytronomeRepository(Application context){
-
          keytronomeDB = KeytronomeRoomDatabase.getDatabase(context);
          keytronomeDao = keytronomeDB.keytronomeDao();
+    }
+
+    public LiveData<List<Keytronome>> getPresets(){
+        mAllPresets = keytronomeDao.getAllPresets();
+        return mAllPresets;
     }
 
     public Completable savePreset(String name){
@@ -48,6 +53,7 @@ public class KeytronomeRepository {
         Keytronome entity = model.toEntity();
         return Completable.fromCallable(()-> keytronomeDB.keytronomeDao().insert(entity));
     }
+
 
 
     public MutableLiveData<Integer> getTempo(){

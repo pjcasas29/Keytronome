@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.keytronome.db.Keytronome;
 import com.example.keytronome.repositories.KeytronomeRepository;
 import com.example.keytronome.tasks.CueTask;
 import com.example.keytronome.tasks.MetronomeTask;
@@ -234,4 +235,10 @@ public class MainActivityViewModel extends AndroidViewModel {
     public Completable savePreset(String name){
         return mRepo.savePreset(name);
     }
+
+
+    public LiveData<List<Keytronome>> getPresets() {
+        return mRepo.getPresets();
+    }
+
 }

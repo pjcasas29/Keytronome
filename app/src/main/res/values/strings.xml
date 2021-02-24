@@ -39,4 +39,5 @@
     <string name="preset_name">preset name</string>
     <string name="cancel">cancel</string>
     <string name="save_hint">Enter preset name</string>
+    <string name="no_preset">No preset</string>
 </resources>

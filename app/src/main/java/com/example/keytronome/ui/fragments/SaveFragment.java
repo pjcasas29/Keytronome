@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.text.Editable;
@@ -102,7 +103,12 @@ public class SaveFragment extends Fragment {
         load.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Fragment loadF = new LoadFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.fragment_fade_enter, R.anim.fragment_fade_exit, R.anim.fragment_fade_enter, R.anim.fragment_fade_exit)
+                        .replace(R.id.gridLayout, loadF)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
