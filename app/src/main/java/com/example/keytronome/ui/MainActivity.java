@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView orderButtonTv;
     private TextView readyTv;
     private View nextKeyGroup;
+    ImageView twitterButton;
 
 
     @Override
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         orderButtonTv = findViewById(R.id.orderButtonTv);
         readyTv = findViewById(R.id.ready);
         nextKeyGroup = findViewById(R.id.nextKeyGroup);
+        twitterButton = findViewById(R.id.twitterButton);
 
         //Set top padding for status bar
         findViewById(R.id.main_activity).setPadding(0, getStatusBarHeight(), 0, 0);
@@ -94,6 +97,14 @@ public class MainActivity extends AppCompatActivity {
 
         //Main Play button
         playButton.setOnClickListener(view -> mMainActivityViewModel.play());
+
+        twitterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(MainActivity.this, TwitterActivity.class);
+                MainActivity.this.startActivity(myIntent);
+            }
+        });
 
         setObservers();
         initGridMenu();

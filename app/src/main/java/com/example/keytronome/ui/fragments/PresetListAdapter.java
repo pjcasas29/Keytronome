@@ -18,12 +18,16 @@ import java.util.List;
 
 public class PresetListAdapter extends RecyclerView.Adapter<PresetListAdapter.PresetViewHolder> {
 
+
+
     private final LayoutInflater layoutInflater;
     private Context context;
     private List<Keytronome> presets;
+    final private ListItemClickListener mOnClickListener;
 
 
-    public PresetListAdapter(Activity activity) {
+    public PresetListAdapter(Activity activity, ListItemClickListener onClickListener) {
+        this.mOnClickListener = onClickListener;
         layoutInflater = LayoutInflater.from(activity);
         context = activity;
     }
@@ -60,7 +64,7 @@ public class PresetListAdapter extends RecyclerView.Adapter<PresetListAdapter.Pr
         else return 0;
     }
 
-    public class PresetViewHolder extends RecyclerView.ViewHolder{
+    public class PresetViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView presetView;
         private int mPosition;
@@ -68,11 +72,19 @@ public class PresetListAdapter extends RecyclerView.Adapter<PresetListAdapter.Pr
         public PresetViewHolder(View itemView){
             super(itemView);
             presetView = itemView.findViewById(R.id.presetTxv);
+            itemView.setOnClickListener(this);
         }
 
         public void setData(String name, int position){
             presetView.setText(name);
             mPosition = position;
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            mOnClickListener.onListItemClick(position);
         }
     }
 }

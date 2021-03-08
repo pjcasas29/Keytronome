@@ -52,7 +52,6 @@ public class TempoScrollerFragment extends Fragment {
         Button backArrow = getActivity().findViewById(R.id.backArrowTempo);
         backArrow.setOnClickListener(view1 -> getFragmentManager().popBackStack());
 
-        // Inflate the layout for this fragment
         viewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
 
         //Set the scrollablle tempo

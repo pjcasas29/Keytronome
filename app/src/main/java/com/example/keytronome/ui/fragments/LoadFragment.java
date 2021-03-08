@@ -58,7 +58,12 @@ public class LoadFragment extends Fragment {
 
 
         RecyclerView presetsRecyclerView = getActivity().findViewById(R.id.presetRv);
-        presetListAdapter = new PresetListAdapter(getActivity());
+        presetListAdapter = new PresetListAdapter(getActivity(), new ListItemClickListener() {
+            @Override
+            public void onListItemClick(int position) {
+                //Save
+            }
+        });
         presetsRecyclerView.setAdapter(presetListAdapter);
         presetsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 

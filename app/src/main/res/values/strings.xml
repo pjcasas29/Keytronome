@@ -40,4 +40,8 @@
     <string name="cancel">cancel</string>
     <string name="save_hint">Enter preset name</string>
     <string name="no_preset">No preset</string>
+    <string name="Login">login</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="share_the_love">Share the love!</string>
 </resources>
